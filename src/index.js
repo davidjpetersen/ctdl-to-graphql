@@ -1,23 +1,15 @@
 import { Listr } from 'listr2';
-
 import path from 'path';
-import {
-	deleteFile,
-	deleteFolder,
-	
-	generateSchema,
-	parseCSV,
-	processCSVData,
-	saveSchemaToFile,
-} from './tasks/index.js';
 
 import config from './config.js';
+import { deleteFile, deleteFolder, generateSchema, parseCSV, processCSVData, saveSchemaToFile } from './tasks/index.js';
+
 const tasks = [
 	{
 		title: 'Clean directories',
 		task: async (ctx) => {
 			deleteFile(config.output.filePath);
-			deleteFolder(path.dirname(config.output.folderPath));
+			// deleteFolder(path.dirname(config.output.folderPath));
 		},
 	},
 	{
