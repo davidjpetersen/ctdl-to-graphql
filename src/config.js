@@ -1,8 +1,16 @@
 import dotenv from 'dotenv';
 import path from 'path';
+
 dotenv.config();
 
 const config = {
+	schema: {
+		csv: 'https://credreg.net/ctdl/schema/encoding/spreadsheet?cellSeparator=comma&useCondensedColumns=true&includeInverseColumns=true',
+		json: {
+			schema: 'https://credreg.net/ctdl/schema/encoding/json',
+			context: 'https://credreg.net/ctdl/schema/context/json',
+		},
+	},
 	input: {
 		folderPath: process.env.INPUT_FOLDER_PATH,
 		filePath: process.env.INPUT_FILE_PATH,
