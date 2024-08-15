@@ -1,0 +1,15 @@
+{
+  "name": "ctdl-to-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Petersen",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "csv-parser": "^3.0.0",
+    "listr2": "^8.2.4"
+  }
+}
