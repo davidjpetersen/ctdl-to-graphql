@@ -1,7 +1,6 @@
 const processCSVData = (results) => {
 	const schemaTypes = {};
 	const fieldTypes = {};
-
 	results.forEach((row) => {
 		const {
 			'@id': typeName,

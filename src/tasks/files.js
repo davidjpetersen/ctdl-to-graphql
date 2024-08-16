@@ -22,7 +22,11 @@ const deleteFile = (filePath) => {
 // Delete the folder at the filePath if it exists
 const deleteFolder = (filePath) => {
 	if (fs.existsSync(filePath)) {
-		fs.rmdirSync(filePath, { recursive: true });
+		fs.rm(filePath, { recursive: true, force: true }, (err) => {
+			if (err) {
+				console.error('Failed to delete folder:', err);
+			}
+		});
 	}
 };
 

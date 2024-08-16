@@ -5,26 +5,26 @@ dotenv.config();
 
 const config = {
 	schema: {
-		csv: 'https://credreg.net/ctdl/schema/encoding/spreadsheet?cellSeparator=comma&useCondensedColumns=true&includeInverseColumns=true',
+		csv: process.env.SCHEMA_CSV_URL || '',
 		json: {
-			schema: 'https://credreg.net/ctdl/schema/encoding/json',
-			context: 'https://credreg.net/ctdl/schema/context/json',
+			schema: process.env.JSON_SCHEMA_URL || '',
+			context: process.env.JSON_CONTEXT_URL || '',
 		},
 	},
 	input: {
-		folderPath: process.env.INPUT_FOLDER_PATH,
-		filePath: process.env.INPUT_FILE_PATH,
+		folderPath: process.env.INPUT_FOLDER_PATH || '',
+		filePath: process.env.INPUT_FILE_PATH || '',
 		completePath: path.join(
-			process.env.INPUT_FOLDER_PATH,
-			process.env.INPUT_FILE_PATH
+			process.env.INPUT_FOLDER_PATH || '',
+			process.env.INPUT_FILE_PATH || ''
 		),
 	},
 	output: {
-		folderPath: process.env.OUTPUT_FOLDER_PATH,
-		filePath: process.env.OUTPUT_FILE_NAME,
+		folderPath: process.env.OUTPUT_FOLDER_PATH || '',
+		filePath: process.env.OUTPUT_FILE_NAME || '',
 		completePath: path.join(
-			process.env.OUTPUT_FOLDER_PATH,
-			process.env.OUTPUT_FILE_NAME
+			process.env.OUTPUT_FOLDER_PATH || '',
+			process.env.OUTPUT_FILE_NAME || ''
 		),
 	},
 };
