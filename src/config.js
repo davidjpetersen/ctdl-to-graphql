@@ -27,6 +27,14 @@ const config = {
 			process.env.OUTPUT_FILE_NAME || ''
 		),
 	},
+	mappings: {
+		'rdf:langString': 'Object',
+		'xsd:anyURI': 'AWSURL',
+		'xsd:date': 'AWSDate',
+		'xsd:date': 'AWSDateTime',
+		'xsd:string': 'String',
+		'skos:Concept': 'Object',
+	},
 };
 
 export default config;

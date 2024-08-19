@@ -1,5 +1,5 @@
 import { Listr } from 'listr2';
-
+import path from 'path';
 import config from './config.js';
 import {
 	createFile,
@@ -15,6 +15,7 @@ import {
 	parseCSV,
 } from './tasks/index.js';
 
+const { input, output, schema } = config;
 const tasks = [
 	{
 		title: 'Clean directories',
@@ -26,26 +27,30 @@ const tasks = [
 	{
 		title: 'Download copy of schema',
 		task: async (ctx) => {
-			ctx.csv = await getURL(config.schema.csv);
-			createFolder(config.output.folderPath);
-			createFile(config.input.completePath, ctx.csv);
+			ctx.csv = await getURL(schema.csv);
+			createFolder(output.folderPath);
+			createFile(input.completePath, ctx.csv);
 		},
 	},
 	{
 		title: 'Parse CSV',
 		task: async (ctx) => {
-			ctx.results = await parseCSV(config.input.completePath);
-			createFile(
-				config.output.completePath,
-				JSON.stringify(ctx.results, null, 2)
-			);
+			ctx.results = await parseCSV(input.completePath);
+			createFile(output.completePath, JSON.stringify(ctx.results, null, 2));
 		},
 	},
 	{
-		title: 'Process CSV data',
+		title: 'Process Terms',
 		task: async (ctx) => {
 			if (ctx.results) {
 				ctx.types = extractTypes(ctx.results);
+			}
+		},
+	},
+	{
+		title: 'Process Properties',
+		task: async (ctx) => {
+			if (ctx.results) {
 				ctx.properties = extractProperties(ctx.results);
 			}
 		},
@@ -53,12 +58,14 @@ const tasks = [
 	{
 		title: 'Save schema to file',
 		task: async (ctx) => {
-			const schemaPath = config.output.completePath;
+			const schemaPath = output.folderPath;
+			const typePath = path.join(schemaPath, 'types.json');
+			const propertyPath = path.join(schemaPath, 'properties.json');
 			const types = ctx.types || '';
 			const properties = ctx.properties || '';
 
-			createFile(schemaPath, JSON.stringify(types, null, 2));
-			createFile(schemaPath, JSON.stringify(properties, null, 2));
+			createFile(typePath, JSON.stringify(types, null, 2));
+			createFile(propertyPath, JSON.stringify(properties, null, 2));
 		},
 	},
 ];

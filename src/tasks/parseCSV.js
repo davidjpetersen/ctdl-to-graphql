@@ -1,6 +1,4 @@
 import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import csv from 'csv-parser';
 const parseCSV = (csvFilePath) => {
 	return new Promise((resolve, reject) => {
