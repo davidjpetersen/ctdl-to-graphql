@@ -1,5 +1,5 @@
 import { Listr } from 'listr2';
-
+import fs from 'fs/promises';
 import config from './config.js';
 import {
 	createFile,
@@ -11,60 +11,86 @@ import {
 	extractProperties,
 	extractTypes,
 	getURL,
-	parseCSV,
+	generateTypes,
 } from './tasks/index.js';
 
 const { input, output, replacer, schema } = config;
+
 const tasks = [
 	{
 		title: 'Clean directories',
-		task: async (ctx) => {
-			deleteFile(config.output.filePath);
-			deleteFolder(config.output.folderPath);
+		task: async () => {
+			await Promise.all([
+				deleteFile(output.filePath),
+				deleteFolder(output.folderPath),
+			]);
+			await createFolder(output.folderPath);
 		},
 	},
 	{
-		title: 'Download copy of schema',
+		title: 'Download or load schema',
 		task: async (ctx) => {
-			ctx.schema = await getURL(schema.json.schema);
-			ctx.schema = ctx.schema['@graph'];
-			createFolder(output.folderPath);
-			createFile(`${input.folderPath}/schema.json`, JSON.stringify(ctx.schema));
-		},
-	},
-	{
-		title: 'Process Terms',
-		task: async (ctx) => {
-			if (ctx.schema) {
-				// Convert schema to array of objects
-
-				ctx.types = extractTypes(ctx.schema);
+			const schemaFilePath = `${input.folderPath}/schema.json`;
+			try {
+				ctx.schema = JSON.parse(await fs.readFile(schemaFilePath, 'utf8'));
+			} catch {
+				ctx.schema = (await getURL(schema.json.schema))['@graph'];
+				await fs.writeFile(schemaFilePath, JSON.stringify(ctx.schema));
 			}
 		},
 	},
 	{
-		title: 'Process Properties',
+		title: 'Process Terms with type rdfs:Class and save as types.json',
 		task: async (ctx) => {
-			if (ctx.schema) {
-				ctx.properties = extractProperties(ctx.schema);
-			}
+			ctx.types = ctx.schema ? extractTypes(ctx.schema) : null;
+			ctx.types = JSON.stringify(ctx.types, replacer, 2) || '';
+			await createFile(`${output.folderPath}/types.json`, ctx.types);
 		},
 	},
 	{
-		title: 'Save schema to file',
+		title:
+			'Process Properties with type rdf:Property and save as properties.json',
 		task: async (ctx) => {
-			// Paths to the files
-			const schemaPath = output.folderPath;
-			const typePath = `${schemaPath}/types.json`;
-			const propertyPath = `${schemaPath}/properties.json`;
-
-			// Data to write to the files
-			const types = ctx.types || '';
-			const properties = ctx.properties || '';
-
-			// Create the files
-			createFile(typePath, JSON.stringify(types, replacer, 2));
-			createFile(propertyPath, JSON.stringify(properties, replacer, 2));
+			ctx.properties = ctx.schema ? extractProperties(ctx.schema) : null;
+			ctx.properties = JSON.stringify(ctx.properties, replacer, 2) || '';
+			await createFile(`${output.folderPath}/properties.json`, ctx.properties);
+		},
+	},
+	{
+		title: 'Generate Union Property Types',
+		task: async (ctx) => {
+			const properties = JSON.parse(ctx.properties);
+			const unionPropertyTypes = properties
+				.filter((property) => property.allowedValues.length > 1)
+				.map(
+					({ name, allowedValues }) =>
+						`union ${name}Union = ${allowedValues.join(' | ')}`
+				);
+			await createFile(
+				`${output.folderPath}/unions.graphql`,
+				unionPropertyTypes.join('\n')
+			);
+		},
+	},
+	{
+		title: 'Generate Types that use Primitive Fields',
+		task: async (ctx) => {
+			const properties = JSON.parse(ctx.properties);
+			const primitivePropertyTypes = properties
+				.filter((property) => property.allowedValues.length === 1)
+				.map(({ name, allowedValues }) => `${name}: ${allowedValues}`);
+			await createFile(
+				`${output.folderPath}/primitiveProperties.graphql`,
+				primitivePropertyTypes.join('\n')
+			);
+		},
+	},
+	{
+		title: 'Generate GraphQL Schema',
+		task: async ({ types }) => {
+			const parsedTypes = JSON.parse(types) || '';
+			const schema = generateTypes(parsedTypes);
+			await createFile(`${output.folderPath}/schema.graphql`, schema);
 		},
 	},
 ];
