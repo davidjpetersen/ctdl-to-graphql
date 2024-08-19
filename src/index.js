@@ -1,5 +1,5 @@
 import { Listr } from 'listr2';
-import path from 'path';
+
 import config from './config.js';
 import {
 	createFile,
@@ -7,15 +7,14 @@ import {
 	deleteFile,
 	deleteFolder,
 } from './tasks/files.js';
-
 import {
-	extractTypes,
 	extractProperties,
+	extractTypes,
 	getURL,
 	parseCSV,
 } from './tasks/index.js';
 
-const { input, output, schema } = config;
+const { input, output, replacer, schema } = config;
 const tasks = [
 	{
 		title: 'Clean directories',
@@ -27,45 +26,45 @@ const tasks = [
 	{
 		title: 'Download copy of schema',
 		task: async (ctx) => {
-			ctx.csv = await getURL(schema.csv);
+			ctx.schema = await getURL(schema.json.schema);
+			ctx.schema = ctx.schema['@graph'];
 			createFolder(output.folderPath);
-			createFile(input.completePath, ctx.csv);
-		},
-	},
-	{
-		title: 'Parse CSV',
-		task: async (ctx) => {
-			ctx.results = await parseCSV(input.completePath);
-			createFile(output.completePath, JSON.stringify(ctx.results, null, 2));
+			createFile(`${input.folderPath}/schema.json`, JSON.stringify(ctx.schema));
 		},
 	},
 	{
 		title: 'Process Terms',
 		task: async (ctx) => {
-			if (ctx.results) {
-				ctx.types = extractTypes(ctx.results);
+			if (ctx.schema) {
+				// Convert schema to array of objects
+
+				ctx.types = extractTypes(ctx.schema);
 			}
 		},
 	},
 	{
 		title: 'Process Properties',
 		task: async (ctx) => {
-			if (ctx.results) {
-				ctx.properties = extractProperties(ctx.results);
+			if (ctx.schema) {
+				ctx.properties = extractProperties(ctx.schema);
 			}
 		},
 	},
 	{
 		title: 'Save schema to file',
 		task: async (ctx) => {
+			// Paths to the files
 			const schemaPath = output.folderPath;
-			const typePath = path.join(schemaPath, 'types.json');
-			const propertyPath = path.join(schemaPath, 'properties.json');
+			const typePath = `${schemaPath}/types.json`;
+			const propertyPath = `${schemaPath}/properties.json`;
+
+			// Data to write to the files
 			const types = ctx.types || '';
 			const properties = ctx.properties || '';
 
-			createFile(typePath, JSON.stringify(types, null, 2));
-			createFile(propertyPath, JSON.stringify(properties, null, 2));
+			// Create the files
+			createFile(typePath, JSON.stringify(types, replacer, 2));
+			createFile(propertyPath, JSON.stringify(properties, replacer, 2));
 		},
 	},
 ];

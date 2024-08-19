@@ -28,12 +28,25 @@ const config = {
 		),
 	},
 	mappings: {
-		'rdf:langString': 'Object',
-		'xsd:anyURI': 'AWSURL',
-		'xsd:date': 'AWSDate',
-		'xsd:date': 'AWSDateTime',
-		'xsd:string': 'String',
-		'skos:Concept': 'Object',
+		'asn:': 'asn_',
+		'ceasn:': 'ceasn_',
+		'ceterms:': 'ceterms_',
+		'dct:': 'dct_',
+		'owl:': 'owl_',
+		'qdata:': 'qdata_',
+		'rdf:': 'rdf_',
+		'rdfs:': 'rdfs_',
+		'schema:': 'schema_',
+		'skos:': 'skos_',
+		'xsd:': 'xsd_',
+	},
+	replacer: (key, value) => {
+		if (typeof value === 'string') {
+			return Object.keys(config.mappings).reduce((acc, match) => {
+				return acc.replace(new RegExp(match, 'g'), config.mappings[match]);
+			}, value);
+		}
+		return value;
 	},
 };
 

@@ -3,10 +3,11 @@ const extractTypes = (results) => {
 		.filter((result) => result['@type'] === 'rdfs:Class')
 		.map((result) => ({
 			name: result['@id'],
-			extends: result['rdfs:subClassOf / rdfs:subPropertyOf / skos:broader'],
-			comment: result['rdfs:comment / skos:definition'],
-			description: result['dct:description'],
-			fields: result['meta:domainFor'].split('\n').map((field) => field),
+			extends: result['rdfs:subClassOf'] || '',
+			comment: result['rdfs:comment']?.['en-US'] || '',
+			description: result['dct:description']?.['en-US'] || '',
+			changeHistory: result['meta.changeHistory'] || '',
+			fields: result['meta:domainFor'],
 		}));
 };
 
