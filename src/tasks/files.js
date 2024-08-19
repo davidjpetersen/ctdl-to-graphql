@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 // Define a function that checks if a file exists at the filePath
 const checkFileExists = async (filePath) => {
@@ -15,11 +16,12 @@ const checkFileExists = async (filePath) => {
 
 // Create the file at the filePath and write the contents to it
 
-const createFile = async (outputFilePath, contents) => {
-	await fs.promises.writeFile(outputFilePath, contents);
+const createFile = async (filePath, contents) => {
+	const directory = path.dirname(filePath);
+	await createFolder(directory);
+	await fs.promises.writeFile(filePath, contents);
 	return true;
 };
-
 // Create a folder at the folderPath if it doesn't exist
 const createFolder = async (folder) => {
 	if (!fs.existsSync(folder)) {

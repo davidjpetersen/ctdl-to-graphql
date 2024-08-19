@@ -8,6 +8,7 @@ import {
 	deleteFolder,
 } from './tasks/files.js';
 import {
+	combineSchemaFiles,
 	extractProperties,
 	extractTypes,
 	getURL,
@@ -40,20 +41,21 @@ const tasks = [
 		},
 	},
 	{
-		title: 'Process Terms with type rdfs:Class and save as types.json',
+		title: 'Process schema data',
 		task: async (ctx) => {
-			ctx.types = ctx.schema ? extractTypes(ctx.schema) : null;
-			ctx.types = JSON.stringify(ctx.types, replacer, 2) || '';
-			await createFile(`${output.folderPath}/types.json`, ctx.types);
-		},
-	},
-	{
-		title:
-			'Process Properties with type rdf:Property and save as properties.json',
-		task: async (ctx) => {
-			ctx.properties = ctx.schema ? extractProperties(ctx.schema) : null;
-			ctx.properties = JSON.stringify(ctx.properties, replacer, 2) || '';
-			await createFile(`${output.folderPath}/properties.json`, ctx.properties);
+			if (!ctx.schema) return;
+
+			ctx.types = JSON.stringify(extractTypes(ctx.schema), replacer, 2);
+			ctx.properties = JSON.stringify(
+				extractProperties(ctx.schema),
+				replacer,
+				2
+			);
+
+			await Promise.all([
+				createFile(`${input.folderPath}/types.json`, ctx.types),
+				createFile(`${input.folderPath}/properties.json`, ctx.properties),
+			]);
 		},
 	},
 	{
@@ -62,35 +64,45 @@ const tasks = [
 			const properties = JSON.parse(ctx.properties);
 			const unionPropertyTypes = properties
 				.filter((property) => property.allowedValues.length > 1)
+
 				.map(
 					({ name, allowedValues }) =>
 						`union ${name}Union = ${allowedValues.join(' | ')}`
 				);
-			await createFile(
-				`${output.folderPath}/unions.graphql`,
-				unionPropertyTypes.join('\n')
-			);
+			ctx.unions = unionPropertyTypes.join('\n');
+			await createFile(`${output.folderPath}/unions.graphql`, ctx.unions);
 		},
 	},
 	{
-		title: 'Generate Types that use Primitive Fields',
+		title: 'Generate Types with Primitive Fields',
 		task: async (ctx) => {
 			const properties = JSON.parse(ctx.properties);
-			const primitivePropertyTypes = properties
+			ctx.primitives = properties
 				.filter((property) => property.allowedValues.length === 1)
-				.map(({ name, allowedValues }) => `${name}: ${allowedValues}`);
+
+				.reduce((acc, { name, allowedValues }) => {
+					acc[name] = allowedValues[0];
+					return acc;
+				}, {});
 			await createFile(
-				`${output.folderPath}/primitiveProperties.graphql`,
-				primitivePropertyTypes.join('\n')
+				`${input.folderPath}/primitives.json`,
+				JSON.stringify(ctx.primitives, replacer, 2)
 			);
 		},
 	},
 	{
 		title: 'Generate GraphQL Schema',
-		task: async ({ types }) => {
-			const parsedTypes = JSON.parse(types) || '';
-			const schema = generateTypes(parsedTypes);
-			await createFile(`${output.folderPath}/schema.graphql`, schema);
+		task: async (ctx) => {
+			const types = generateTypes(JSON.parse(ctx.types) || '');
+			await createFile(`${output.folderPath}/generatedTypes.graphql`, types);
+			const schemaFiles = [
+				`${input.folderPath}/customTypes.graphql`,
+				`${output.folderPath}/generatedTypes.graphql`,
+				`${output.folderPath}/unions.graphql`,
+			];
+
+			const schemaContent = combineSchemaFiles(schemaFiles);
+			await createFile(`${output.folderPath}/schema.graphql`, schemaContent);
 		},
 	},
 ];
