@@ -1,12 +1,12 @@
 import { Listr } from 'listr2';
-import config from './config.js';
-import { cleanDirectories, createFile } from './tasks/files.js';
+import { config, files } from './utils/index.js';
 import {
 	combineSchemaFiles,
 	downloadSchema,
 	generateTypes,
 } from './tasks/index.js';
-1;
+
+const { cleanDirectories, createFile } = files;
 const { remote, raw, input, output, replacer } = config;
 
 const generateUnionPropertyTypes = async (ctx) => {

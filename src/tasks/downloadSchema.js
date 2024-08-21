@@ -1,7 +1,8 @@
-import config from '../config.js';
-import { checkFileExists, createFile } from './files.js';
-import getURL from './getURL.js';
+import { config, files, http } from '../utils/index.js';
+
 const { remote, raw, replacer } = config;
+const { checkFileExists, createFile } = files;
+const { getURL } = http;
 const downloadSchema = async () => {
 	const entries = Object.entries(remote);
 

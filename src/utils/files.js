@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import config from '../config.js';
+import config from './config.js';
 
 const { output } = config;
 
@@ -74,7 +74,7 @@ const readFile = async (filePath) => {
 	}
 };
 
-export {
+export default {
 	checkFileExists,
 	cleanDirectories,
 	createFile,
