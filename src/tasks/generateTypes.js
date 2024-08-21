@@ -1,5 +1,4 @@
-import lookupType from './lookupType.js';
-const generateTypes = (schemaTypes) => {
+const generateTypes = (schemaTypes, primativeMappings) => {
 	if (
 		!Array.isArray(schemaTypes) ||
 		!schemaTypes.every((item) => typeof item === 'object')
@@ -21,7 +20,10 @@ const generateTypes = (schemaTypes) => {
 
 		const fieldDefinitions = fields
 			?.map((field) => {
-				return `  ${field}: ${lookupType(field)}`;
+				const typeDefinition = primativeMappings[field]
+					? primativeMappings[field]
+					: `${field}Union`;
+				return `${field}: ${typeDefinition}`;
 			})
 			.join('\n');
 
@@ -32,13 +34,7 @@ const generateTypes = (schemaTypes) => {
   }`;
 	});
 
-	const schema = `
-  schema {
-	query: Query
-  }
-  
-  ${typeDefinitions.join('\n')}
-  `;
+	const schema = typeDefinitions.join('\n');
 
 	return schema.trim();
 };

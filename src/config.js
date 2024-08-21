@@ -1,31 +1,39 @@
 import dotenv from 'dotenv';
 import path from 'path';
-
 dotenv.config();
 
+const vars = process.env;
+const {
+	ASN_SCHEMA_URL,
+	CTDL_SCHEMA_URL,
+	INPUT_FOLDER_PATH,
+	OUTPUT_FOLDER_PATH,
+} = vars;
+
+const getInputFilePath = (filename) => {
+	return path.join(INPUT_FOLDER_PATH, filename);
+};
+
+// Configuration object by stage
 const config = {
-	schema: {
-		csv: process.env.SCHEMA_CSV_URL || '',
-		json: {
-			schema: process.env.JSON_SCHEMA_URL || '',
-			context: process.env.JSON_CONTEXT_URL || '',
-		},
+	remote: {
+		ctdl: CTDL_SCHEMA_URL,
+		asn: ASN_SCHEMA_URL,
 	},
-	input: {
-		folderPath: process.env.INPUT_FOLDER_PATH || '',
-		filePath: process.env.INPUT_FILE_PATH || '',
-		completePath: path.join(
-			process.env.INPUT_FOLDER_PATH || '',
-			process.env.INPUT_FILE_PATH || ''
-		),
+	raw: {
+		ctdl: getInputFilePath('/raw/ctdl.json'),
+		asn: getInputFilePath('/raw/asn.json'),
+	},
+	types: {
+		ctdl: getInputFilePath('/ctdl/Types.json'),
+		asn: getInputFilePath('/asn/Types.json'),
+	},
+	properties: {
+		ctdl: getInputFilePath('/ctdl/Props.json'),
+		asn: getInputFilePath('/asn/Props.json'),
 	},
 	output: {
-		folderPath: process.env.OUTPUT_FOLDER_PATH || '',
-		filePath: process.env.OUTPUT_FILE_NAME || '',
-		completePath: path.join(
-			process.env.OUTPUT_FOLDER_PATH || '',
-			process.env.OUTPUT_FILE_NAME || ''
-		),
+		folderPath: OUTPUT_FOLDER_PATH,
 	},
 	mappings: {
 		'asn:': 'asn_',

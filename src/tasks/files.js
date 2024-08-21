@@ -1,5 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import config from '../config.js';
+
+const { output } = config;
+
+// Delete the contents of the output folder and recreate it.
+const cleanDirectories = async () => {
+	await deleteFolder(output.folderPath);
+	await createFolder(output.folderPath);
+};
 
 // Define a function that checks if a file exists at the filePath
 const checkFileExists = async (filePath) => {
@@ -54,4 +63,23 @@ const deleteFolder = async (filePath) => {
 	}
 };
 
-export { checkFileExists, createFile, createFolder, deleteFile, deleteFolder };
+// Read the contents of the file at the filePath
+const readFile = async (filePath) => {
+	try {
+		const contents = await fs.promises.readFile(filePath, 'utf8');
+		return contents;
+	} catch (error) {
+		console.error(`Error reading file ${filePath}:`, error);
+		throw error;
+	}
+};
+
+export {
+	checkFileExists,
+	cleanDirectories,
+	createFile,
+	createFolder,
+	deleteFile,
+	deleteFolder,
+	readFile,
+};
