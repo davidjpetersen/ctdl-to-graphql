@@ -5,7 +5,7 @@ import config from './config.js';
 const { output } = config;
 
 // Delete the contents of the output folder and recreate it.
-const cleanDirectories = async () => {
+const cleanDirs = async () => {
 	await deleteFolder(output.folderPath);
 	await createFolder(output.folderPath);
 };
@@ -76,7 +76,7 @@ const readFile = async (filePath) => {
 
 export default {
 	checkFileExists,
-	cleanDirectories,
+	cleanDirs,
 	createFile,
 	createFolder,
 	deleteFile,

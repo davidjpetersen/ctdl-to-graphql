@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-const combineSchemaFiles = (schemaFiles) => {
-	return schemaFiles.reduce((acc, file) => {
+const combineSchemaFiles = async (schemaFiles) => {
+	const schemaContent = schemaFiles.reduce((acc, file) => {
 		try {
 			const fileContent = fs.readFileSync(file, 'utf8');
 			return acc + fileContent + '\n';
@@ -10,6 +10,8 @@ const combineSchemaFiles = (schemaFiles) => {
 			return acc;
 		}
 	}, '');
+
+	await createFile(`${output.folderPath}/schema.graphql`, schemaContent);
 };
 
 export default combineSchemaFiles;
