@@ -31,6 +31,7 @@ const createFile = async (filePath, contents) => {
 // Create a folder at the folderPath if it doesn't exist
 const createFolder = async (folder) => {
 	if (!fs.existsSync(folder)) {
+		console.log('Creating folder:', folder);
 		await fs.promises.mkdir(folder, { recursive: true });
 	}
 	return Promise.resolve();
@@ -73,7 +74,21 @@ const readFile = async (filePath) => {
 
 const getFolderFiles = async (folderPath) => {
 	try {
-		const files = await fs.promises.readdir(folderPath);
+		const entries = await fs.promises.readdir(folderPath, {
+			withFileTypes: true,
+		});
+		let files = [];
+
+		for (const entry of entries) {
+			const fullPath = path.join(folderPath, entry.name);
+			if (entry.isDirectory()) {
+				const subFiles = await getFolderFiles(fullPath);
+				files = files.concat(subFiles);
+			} else {
+				files.push(fullPath);
+			}
+		}
+
 		return files;
 	} catch (error) {
 		console.error(`Error reading folder ${folderPath}:`, error);

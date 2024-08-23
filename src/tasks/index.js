@@ -1,27 +1,29 @@
 import cleanDirs from './cleanDirs.js';
 import combineSchemas from './combineSchemas.js';
-import convertProperties from './convertProperties.js';
-import convertRDFSClass from './convertRDFSClass.js';
+// import convertProperties from '../archive/convertProperties.js';
+// import convertRDFSClass from '../archive/convertRDFSClass.js';
 import downloadSchema from './downloadSchema.js';
-import extractTypes from './extractTypes.js';
-import extractProperties from './extractProperties.js';
+// import extractTypes from '../archive/extractTypes.js';
+// import extractProperties from '../archive/extractProperties.js';
 import getTypes from './getTypes.js';
-import getUnionTypes from './getUnionTypes.js';
-import getPrimitiveTypes from './getPrimitiveTypes.js';
-import getTypesSchema from './getTypesSchema.js';
+import rdfsClass from './rdfsClass.js';
+// import getUnionTypes from '../archive/getUnionTypes.js';
+// import getPrimitiveTypes from '../archive/getPrimitiveTypes.js';
+// import getTypesSchema from '../archive/getTypesSchema.js';
 import splitSchema from './splitSchema.js';
 
 export default {
 	cleanDirs,
-	convertProperties,
-	convertRDFSClass,
+	// convertProperties,
+	// convertRDFSClass,
 	combineSchemas,
 	downloadSchema,
-	extractTypes,
-	extractProperties,
+	// extractTypes,
+	// extractProperties,
 	getTypes,
-	getUnionTypes,
-	getPrimitiveTypes,
-	getTypesSchema,
+	// getUnionTypes,
+	// getPrimitiveTypes,
+	// getTypesSchema,
+	rdfsClass,
 	splitSchema,
 };
