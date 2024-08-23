@@ -2,50 +2,53 @@ import { GraphQLObjectType, GraphQLScalarType, printType } from 'graphql';
 import { config, files } from '../utils/index.js';
 
 const rdfsClass = async () => {
+	// Get all the files in the rdfs/Class folder
 	const rdfsClassFolder = config.getInputFilePath('rdfs/Class');
-	const jsonFiles = await files.getFolderFiles(rdfsClassFolder);
 
-	for (const file of jsonFiles.filter((file) => file.endsWith('.json'))) {
+	// Get all the json files
+	let jsonFiles = await files.getFolderFiles(rdfsClassFolder);
+	jsonFiles = jsonFiles.filter((file) => file.endsWith('.json'));
+
+	// Loop through each file and create a new GraphQLObjectType for each
+	for (const file of jsonFiles) {
+		// Get the contents of the file
 		const contents = await files.readFile(file);
+
+		// Parse the JSON
 		const {
 			'@id': id = '',
-			'@type': typeName = '',
-			'rdfs:label': { 'en-US': label = '' } = {},
 			'rdfs:comment': { 'en-US': comment = '' } = {},
-			'rdfs:subClassOf': baseType = [],
 			'meta:domainFor': classFields = [],
 		} = JSON.parse(contents);
 
-		const typeNameToWrite = id?.replace(':', '_') ?? '';
-		const commentToWrite = comment?.replace(':', '_') ?? '';
-		// const extendsToWrite = baseType.length
-		// 	? baseType.map((type) => type.replace(':', '_')).join(' & ')
-		// 	: '';
+		// Get the type name and comment
+		const typeNameToWrite = id.replace(':', '_');
+		const commentToWrite = comment.replace(':', '_');
 
-		// const isTypeOfFunction = baseType.length
-		// 	? (obj) => obj['@type'] && obj['@type'].includes(baseType[0])
-		// 	: undefined;
-
-		const fields = {};
-		classFields.forEach((field) => {
-			const fieldName = field.split(':').pop();
-			fields[fieldName] = {
+		const fields = classFields.reduce((acc, field) => {
+			const fieldName = field.replace(':', '_');
+			acc[fieldName.replace('ceterms_', '')] = {
 				type: new GraphQLScalarType({
 					name: fieldName,
-					description: field['rdfs:comment']?.['en-US'] || '',
+					description: JSON.stringify(field),
 				}),
 			};
-		});
-		const MyType = new GraphQLObjectType({
+			return acc;
+		}, {});
+
+		const description = `${typeNameToWrite}\n${commentToWrite}`;
+
+		const newType = new GraphQLObjectType({
 			name: typeNameToWrite,
-			description: commentToWrite,
-			// isTypeOf: isTypeOfFunction,
+			description,
 			fields,
 		});
 
-		const schemaString = printType(MyType);
 		const filePath = file.replace('.json', '.graphql');
-		files.createFile(filePath, schemaString);
+		const schemaString = printType(newType);
+
+		// Write the file
+		await files.createFile(filePath, schemaString);
 	}
 };
 
