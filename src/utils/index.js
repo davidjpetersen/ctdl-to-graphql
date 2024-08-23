@@ -1,5 +1,5 @@
 import config from './config.js';
-import files from '../utils/files.js';
-import http from '../utils/http.js';
+import files from './files.js';
+import http from './http.js';
 
 export { config, files, http };

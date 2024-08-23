@@ -65,13 +65,14 @@ const config = {
 		rdfs_Resource: 'AWSURL',
 	},
 	replacer: (key, value) => {
-		if (typeof value === 'string') {
-			return Object.keys(config.mappings).reduce((acc, match) => {
-				return acc.replace(new RegExp(match, 'g'), config.mappings[match]);
-			}, value);
-		}
+		// if (typeof value === 'string') {
+		// 	return Object.keys(config.mappings).reduce((acc, match) => {
+		// 		return acc.replace(new RegExp(match, 'g'), config.mappings[match]);
+		// 	}, value);
+		// }
 		return value;
 	},
+	getInputFilePath,
 };
 
 export default config;

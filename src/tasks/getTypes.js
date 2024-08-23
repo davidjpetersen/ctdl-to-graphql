@@ -1,4 +1,4 @@
-const generateTypes = (schemaTypes, primativeMappings) => {
+const getTypes = (schemaTypes, primativeMappings) => {
 	if (
 		!Array.isArray(schemaTypes) ||
 		!schemaTypes.every((item) => typeof item === 'object')
@@ -39,4 +39,4 @@ const generateTypes = (schemaTypes, primativeMappings) => {
 	return schema.trim();
 };
 
-export default generateTypes;
+export default getTypes;

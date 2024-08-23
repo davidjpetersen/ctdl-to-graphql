@@ -5,7 +5,6 @@ const { checkFileExists, createFile } = files;
 const { getURL } = http;
 const downloadSchema = async () => {
 	const entries = Object.entries(remote);
-
 	for (const [key, url] of entries) {
 		const fileName = raw[key];
 

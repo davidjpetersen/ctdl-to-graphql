@@ -1,4 +1,4 @@
-export const getTypesSchema = async (ctx) => {
+const getTypesSchema = async (ctx) => {
 	const types = JSON.parse(ctx.types);
 	const primitiveMappings = ctx.primitives;
 	const generatedTypes = await generateTypes(types, primitiveMappings);
@@ -7,3 +7,5 @@ export const getTypesSchema = async (ctx) => {
 		generatedTypes
 	);
 };
+
+export default getTypesSchema;

@@ -1,4 +1,4 @@
-export const getPrimitiveTypes = async (ctx) => {
+const getPrimitiveTypes = async (ctx) => {
 	const properties = JSON.parse(ctx.properties);
 	ctx.primitives = properties
 		.filter((property) => property.allowedValues.length === 1)
@@ -13,3 +13,5 @@ export const getPrimitiveTypes = async (ctx) => {
 		primitiveTypesContent
 	);
 };
+
+export default getPrimitiveTypes;

@@ -5,4 +5,4 @@ const getURL = async (url) => {
 	return data;
 };
 
-export default getURL;
+export default { getURL };
