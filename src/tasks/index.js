@@ -1,6 +1,6 @@
 import cleanDirs from './cleanDirs.js';
 import combineSchemas from './combineSchemas.js';
-// import convertProperties from '../archive/convertProperties.js';
+import convertProperties from './convertProperties.js';
 // import convertRDFSClass from '../archive/convertRDFSClass.js';
 import downloadSchema from './downloadSchema.js';
 // import extractTypes from '../archive/extractTypes.js';
@@ -14,7 +14,7 @@ import splitSchema from './splitSchema.js';
 
 export default {
 	cleanDirs,
-	// convertProperties,
+	convertProperties,
 	// convertRDFSClass,
 	combineSchemas,
 	downloadSchema,
