@@ -1,46 +1,26 @@
+const LOG_LEVELS = ['error', 'warn', 'info', 'debug'];
+
 class Logger {
   constructor(logLevel = 'info') {
-    this.logLevel = logLevel;
-    this.levels = ['error', 'warn', 'info', 'debug'];
+    this.setLogLevel(logLevel);
   }
 
   setLogLevel(level) {
-    if (this.levels.includes(level)) {
-      this.logLevel = level;
-    } else {
+    this.logLevel = LOG_LEVELS.includes(level) ? level : 'info';
+    if (!LOG_LEVELS.includes(level)) {
       console.warn(`Invalid log level: ${level}. Using default 'info'.`);
     }
   }
 
-  shouldLog(level) {
-    return this.levels.indexOf(level) <= this.levels.indexOf(this.logLevel);
-  }
-
-  error(...args) {
-    if (this.shouldLog('error')) {
-      console.error('[ERROR]', ...args);
+  log(level, ...args) {
+    if (LOG_LEVELS.indexOf(level) <= LOG_LEVELS.indexOf(this.logLevel)) {
+      console[level](`[${level.toUpperCase()}]`, ...args);
     }
   }
-
-  warn(...args) {
-    if (this.shouldLog('warn')) {
-      console.warn('[WARN]', ...args);
-    }
-  }
-
-  info(...args) {
-    if (this.shouldLog('info')) {
-      console.info('[INFO]', ...args);
-    }
-  }
-
-  debug(...args) {
-    if (this.shouldLog('debug')) {
-      console.debug('[DEBUG]', ...args);
-    }
-  }
+  error = (...args) => this.log('error', ...args);
+  warn = (...args) => this.log('warn', ...args);
+  info = (...args) => this.log('info', ...args);
+  debug = (...args) => this.log('debug', ...args);
 }
 
-const logger = new Logger();
-
-export default logger;
+export default Logger;

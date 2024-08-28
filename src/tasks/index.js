@@ -1,10 +1,4 @@
-import cleanDirs from './cleanDirs.js';
-import combineSchemas from './combineSchemas.js';
-import createSchema from './createSchema.js';
-import downloadSchema from './downloadSchema.js';
-export default {
-  cleanDirs,
-  combineSchemas,
-  createSchema,
-  downloadSchema,
-};
+export { default as cleanDirs } from './cleanDirs.js';
+export { default as combineSchemas } from './combineSchemas.js';
+export { default as createSchema } from './createSchema.js';
+export { default as downloadSchema } from './downloadSchema.js';

@@ -1,7 +1,7 @@
-import { config, files, schema } from '../utils/index.js';
+import { files, schema } from '../utils/index.js';
 import {
+  processRDFSClass,
   rdfProperty,
-  rdfsClass,
   skosConcept,
   skosConceptScheme,
 } from './process/index.js';
@@ -13,44 +13,73 @@ const {
   getPropertyDescription,
 } = schema;
 
-const { extensions, raw } = config;
-const { RDFS_CLASS_FOLDER } = raw;
-const { GRAPHQL_EXTENSION } = extensions;
+/**
+ * Processes an item from the combined CTDL and ASN schemas.
+ *
+ * This function dispatches the processing of the item to the appropriate
+ * processor based on the item's `@type` property. The processors are defined
+ * in the `processors` object, and each processor is responsible for handling
+ * a specific type of item.
+ *
+ * If the item's `@type` is not recognized, the function logs the unknown type
+ * to the console.
+ *
+ * @param {Object} item - The item to be processed.
+ * @param {Object[]} combined - The combined CTDL and ASN schemas.
+ */
+const processItem = (item, combined) => {
+  // Define the processors for different types of items
+  const processors = {
+    rdfs_Class: () => processRDFSClass(item, combined),
+    rdf_Property: () => rdfProperty(item, combined),
+    skos_ConceptScheme: () => skosConceptScheme(item, combined),
+    skos_Concept: () => skosConcept(item, combined),
+  };
 
-const createSchema = async () => {
-  const ctdl = JSON.parse(await files.readFile(raw.ctdl));
-  const asn = JSON.parse(await files.readFile(raw.asn));
+  // Dispatch the processing of the item to the appropriate processor
+  const processor = processors[item['@type']];
 
-  // Join the two schemas into one
-  const combined = [...ctdl, ...asn];
-  for (const item of combined) {
-    const itemType = item['@type'];
+  if (processor) {
+    console.log(`Processing ${item['@id']} of type ${item['@type']}`); // Log the type being processed
+    processor(); // If a processor is found, execute it
+  } else {
+    console.log('Unknown type', item['@type']); // If no processor is found, log the unknown type to the console
+  }
+};
 
-    switch (itemType) {
-      case 'rdfs_Class':
-        const destructuredClass = destructureClass(item);
-        rdfsClass(destructuredClass, combined, {
-          getPropertyFromSchema,
-          getPropertyType,
-          getPropertyDescription,
-          RDFS_CLASS_FOLDER,
-          GRAPHQL_EXTENSION,
-        });
-
-        break;
-      case 'rdf_Property':
-        rdfProperty(item, combined);
-        break;
-      case 'skos_ConceptScheme':
-        skosConceptScheme(item, combined);
-        break;
-      case 'skos_Concept':
-        skosConcept(item, combined);
-        break;
-      default:
-        console.log('Unknown type', itemType, combined);
-        break;
+/**
+ * Asynchronously creates a schema by reading and parsing schema data from multiple files.
+ *
+ * This function takes an object of schema names and their corresponding file paths, reads the schema data from each file, and then processes each item in the combined schema data using the `processItem` function.
+ *
+ * If the `schemas` object is invalid or empty, the function will throw an error. If any errors occur during the schema creation process, the function will log the error and re-throw it.
+ *
+ * @param {Object} schemas - An object of schema names and their corresponding file paths.
+ * @returns {Promise<void>} - A Promise that resolves when the schema creation process is complete.
+ */
+const createSchema = async schemas => {
+  try {
+    /// Check if the schemas object is valid and not empty
+    if (typeof schemas !== 'object' || Object.keys(schemas).length === 0) {
+      throw new Error('Invalid or empty schemas object');
     }
+
+    // Read and parse schema data from each file
+    const schemaPromises = Object.entries(schemas).map(
+      async ([schemaName, schemaPath]) => {
+        const schemaData = await files.readFile(schemaPath);
+        return JSON.parse(schemaData);
+      }
+    );
+
+    // Combine the parsed schema data from all files
+    const allSchemaItems = (await Promise.all(schemaPromises)).flat();
+
+    // Loop through all items of both schemas and process them
+    allSchemaItems.forEach(item => processItem(item, allSchemaItems));
+  } catch (error) {
+    console.error('Error creating schema:', error);
+    throw error; // or handle it appropriately
   }
 };
 

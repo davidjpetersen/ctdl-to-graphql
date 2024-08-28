@@ -1,8 +1,18 @@
-// Get contents of URL using node-fetch
-const getURL = async (url) => {
-	const response = await fetch(url);
-	const data = await response.json();
-	return data;
+import fetch from 'node-fetch';
+
+const getURL = async url => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching ${url}:`, error);
+    throw error;
+  }
 };
 
-export default { getURL };
+export default {
+  getURL,
+};

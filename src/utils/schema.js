@@ -14,25 +14,13 @@ import { config } from './index.js';
 
 const { mappings } = config;
 
-/**
- * Converts an RDFS class to an object that is easier to work with.
- *
- * @param {Object} item - The RDFS class to be destructured.
- * @param {string} item['@id'] - The ID of the RDFS class.
- * @param {string} item['dct_description']['en-US'] - The description of the RDFS class in English.
- * @param {string[]} item['meta_domainFor'] - The fields that are part of the RDFS class.
- * @param {string[]} item['rdfs_subClassOf'] - The superclasses of the RDFS class.
- * @returns {Object} - An object with the destructured properties of the RDFS class.
- */
-const destructureClass = item => {
-  const classId = item['@id'];
-  const className = item['@id'].split('_')[1];
-  const classDescription = item['dct_description']?.['en-US'] ?? '';
-  const classFields = item['meta_domainFor'] ?? [];
-  const subClassOf = item['rdfs_subClassOf'] ?? [];
-
-  return { classId, className, classDescription, classFields, subClassOf };
-};
+const destructureClass = item => ({
+  classId: item['@id'],
+  className: item['@id'].split('_')[1],
+  classDescription: item['dct_description']?.['en-US'] ?? '',
+  classFields: item['meta_domainFor'] ?? [],
+  subClassOf: item['rdfs_subClassOf'] ?? [],
+});
 
 /**
  * Converts an RDF property to an object that is easier to work with.
@@ -132,6 +120,7 @@ const getPropertyType = (propertyName, acceptedValues) => {
  * @returns {Object} - An object containing the GraphQL fields.
  */
 const getGraphQLProperties = (classFields, schema) => {
+  if (!classFields) return {};
   const fields = Object.fromEntries(
     Object.entries(classFields).map(([, propertyId]) => {
       const property = getPropertyFromSchema(propertyId, schema);
@@ -150,10 +139,40 @@ const getGraphQLProperties = (classFields, schema) => {
   return fields;
 };
 
+const getGraphQLType = (
+  className,
+  classDescription,
+  graphqlFields,
+  subClassOf
+) => {
+  if (!className || !classDescription || !graphqlFields) {
+    throw new Error(
+      'className, classDescription, and graphqlFields are required'
+    );
+  }
+
+  return new GraphQLObjectType({
+    name: className,
+    description: `${className} - ${classDescription}`,
+    fields: () => graphqlFields,
+
+    interfaces: subClassOf
+      ? subClassOf.map(
+          subClass =>
+            new GraphQLObjectType({
+              name: subClass.split('_')[1],
+              fields: () => ({}),
+            })
+        )
+      : [],
+  });
+};
+
 export default {
   destructureClass,
   destructureProperty,
   getGraphQLProperties,
+  getGraphQLType,
   getPropertyDescription,
   getPropertyFromSchema,
   getPropertyType,

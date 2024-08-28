@@ -20,11 +20,14 @@ const config = {
     JSON_EXTENSION: '.json',
     GRAPHQL_EXTENSION: '.graphql',
   },
+  regex: {
+    COLON_REGEX: /:/g,
+  },
   remote: {
     ctdl: CTDL_SCHEMA_URL,
     asn: ASN_SCHEMA_URL,
   },
-  raw: {
+  schemas: {
     ctdl: getInputFilePath('/raw/ctdl.json'),
     asn: getInputFilePath('/raw/asn.json'),
   },
