@@ -21,7 +21,6 @@ const rdfsClass = async (
   try {
     const { classId, className, classDescription, classFields, subClassOf } =
       destructureClass(item);
-    logger.debug('subClassOf', subClassOf);
 
     const graphqlFields = Object.entries(classFields).reduce(
       (fields, [, propertyId]) => {
