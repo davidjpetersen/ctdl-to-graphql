@@ -1,44 +1,24 @@
 import { GraphQLObjectType, printType } from 'graphql';
-import { config, files, logger } from '../../utils/index.js';
+import { config, files, logger, schema } from '../../utils/index.js';
+const {
+  destructureProperty,
+  getGraphQLProperties,
+  getPropertyFromSchema,
+  getPropertyType,
+  getPropertyDescription,
+} = schema;
 
 const { createFile } = files;
-const { types, extensions, mappings } = config;
+const { types, extensions } = config;
 const { RDFS_CLASS_FOLDER } = types;
 const { GRAPHQL_EXTENSION } = extensions;
 
-const rdfsClass = async (
-  item,
-  schema,
-  {
-    destructureClass,
-    getProperty,
-    getPropertyType,
-    getPropertyDescription,
-    classFolder = RDFS_CLASS_FOLDER,
-    graphqlExtension = GRAPHQL_EXTENSION,
-  }
-) => {
+const rdfsClass = async (destructuredClass, schema) => {
   try {
     const { classId, className, classDescription, classFields, subClassOf } =
-      destructureClass(item);
+      destructuredClass;
 
-    const graphqlFields = Object.entries(classFields).reduce(
-      (fields, [, propertyId]) => {
-        const property = getProperty(propertyId, schema);
-
-        const { propertyName, acceptedValues } = destructureProperty(property);
-        logger.debug('property', property);
-        logger.debug('propertyName', propertyName);
-
-        fields[propertyName] = {
-          type: getPropertyType(propertyName, acceptedValues),
-          description: getPropertyDescription(property),
-        };
-
-        return fields;
-      },
-      {}
-    );
+    const graphqlFields = getGraphQLProperties(classFields, schema);
 
     const ClassType = new GraphQLObjectType({
       name: className,
@@ -53,10 +33,8 @@ const rdfsClass = async (
       ),
     });
 
-    await createFile(
-      `${classFolder}/${classId}${graphqlExtension}`,
-      printType(ClassType)
-    );
+    const filePath = `${RDFS_CLASS_FOLDER}/${classId}${GRAPHQL_EXTENSION}`;
+    await createFile(filePath, printType(ClassType));
 
     return ClassType;
   } catch (error) {

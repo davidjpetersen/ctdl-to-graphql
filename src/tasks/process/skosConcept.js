@@ -1,4 +1,4 @@
-const skos_Concept = item => {
+const skosConcept = item => {
   console.log('Process skos_Concept');
 };
-export default skos_Concept;
+export default skosConcept;

@@ -1,4 +1,4 @@
-const rdf_Property = item => {
+const rdfProperty = item => {
   console.log('Process rdf_Property');
 };
-export default rdf_Property;
+export default rdfProperty;
