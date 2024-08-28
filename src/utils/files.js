@@ -22,17 +22,10 @@ const checkFileExists = async filePath => {
 };
 
 // Create the file at the filePath and write the contents to it
-
 const createFile = async (filePath, contents) => {
   const directory = path.dirname(filePath);
   await createFolder(directory);
 
-  const parser = filePath.endsWith('.graphql') ? 'graphql' : 'json';
-
-  // Format the contents with Prettier
-  contents = await prettier.format(contents, {
-    parser,
-  });
   // Write the contents to the file
   await fs.promises.writeFile(filePath, contents);
   return true;
@@ -40,7 +33,6 @@ const createFile = async (filePath, contents) => {
 // Create a folder at the folderPath if it doesn't exist
 const createFolder = async folder => {
   if (!fs.existsSync(folder)) {
-    console.log('Creating folder:', folder);
     await fs.promises.mkdir(folder, { recursive: true });
   }
   return Promise.resolve();
