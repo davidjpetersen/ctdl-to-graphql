@@ -9,7 +9,6 @@ async function retrieveSchemas(schemas) {
 
     // Parse the JSON string into a JavaScript object
     schemaData = JSON.parse(schemaData);
-    // schemaData = schemaData['graph'];
     return schemaData;
   });
 
