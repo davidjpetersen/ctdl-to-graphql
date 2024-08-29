@@ -1,4 +1,9 @@
-import { cleanDirs, createSchema, downloadSchemas } from './tasks/index.js';
+import {
+  cleanDirs,
+  combineSchemas,
+  createSchema,
+  downloadSchemas,
+} from './tasks/index.js';
 
 import { Listr } from 'listr2';
 import { config } from './utils/index.js';
@@ -15,7 +20,7 @@ const tasks = [
   { title: 'Clean directories', task: cleanDirs },
   { title: 'Download or load schemas', task: () => downloadSchemas(schemas) },
   { title: 'Create schema', task: () => createSchema(schemas) },
-  // { title: 'Combine Schema Files', task: combineSchemas },
+  { title: 'Combine Schema Files', task: () => combineSchemas(schemas) },
 ];
 
 /**

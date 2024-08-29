@@ -3,12 +3,8 @@ import path from 'path';
 dotenv.config();
 
 const vars = process.env;
-const {
-  ASN_SCHEMA_URL,
-  CTDL_SCHEMA_URL,
-  INPUT_FOLDER_PATH,
-  OUTPUT_FOLDER_PATH,
-} = vars;
+const { ASN_SCHEMA_URL, CTDL_SCHEMA_URL, INPUT_FOLDER_PATH, OUTPUT_FILE_PATH } =
+  vars;
 
 const getInputFilePath = filename => {
   return path.join(INPUT_FOLDER_PATH, filename);
@@ -45,9 +41,7 @@ const config = {
     ctdl: getInputFilePath('/ctdl/Props.json'),
     asn: getInputFilePath('/asn/Props.json'),
   },
-  output: {
-    folderPath: OUTPUT_FOLDER_PATH,
-  },
+  output: OUTPUT_FILE_PATH,
   mappings: {
     'xsd:integer': 'GraphQLInt',
     'xsd:string': 'GraphQLString',
