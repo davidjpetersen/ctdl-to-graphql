@@ -3,7 +3,7 @@ import { config, files, logger, schema } from '../../utils/index.js';
 import Logger from '../../utils/logger.js';
 import { printType } from 'graphql';
 
-const { getGraphQLProperties, getGraphQLType, destructureClass } = schema;
+const { getGraphQLProperties, getGraphQLType } = schema;
 
 const { createFile } = files;
 const { types, extensions } = config;
@@ -12,10 +12,9 @@ const { GRAPHQL_EXTENSION } = extensions;
 
 const processRDFSClass = async (rdfsClass, schema) => {
   try {
-    const { name, fullName, id, description, fields, subClassOf } = rdfsClass;
+    const { fullName, description, fields, subClassOf } = rdfsClass;
 
     const graphQLFields = getGraphQLProperties(fields, schema);
-    // console.log('graphQLFields', graphQLFields);
 
     const classType = getGraphQLType(
       fullName,

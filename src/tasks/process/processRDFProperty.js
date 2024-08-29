@@ -42,7 +42,7 @@ const processRDFProperty = async (item, schema) => {
 
   const filePath = `${RDF_PROPERTY_FOLDER}/${item.fullName}${GRAPHQL_EXTENSION}`;
   const writeable = printType(property);
-  console.log(writeable);
+
   await createFile(filePath, writeable);
 };
 export default processRDFProperty;

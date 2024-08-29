@@ -35,7 +35,7 @@ const processItem = (item, schema) => {
     // console.log(`Processing ${item.id} of type ${item.type}`); // Log the type being processed
     processor(); // If a processor is found, execute it
   } else {
-    console.log('Unknown type', item.type); // If no processor is found, log the unknown type to the console
+    // console.log('Unknown type', item.type); // If no processor is found, log the unknown type to the console
   }
 };
 

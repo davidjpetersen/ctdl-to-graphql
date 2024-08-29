@@ -32,7 +32,7 @@ async function combineSchemas() {
     // Write the combined schema to the output file
     await createFile(outputFile, combinedSchema);
 
-    console.log(`Combined schema written to ${outputFile}`);
+    // console.log(`Combined schema written to ${outputFile}`);
   } catch (error) {
     console.error('Error combining schemas:', error);
     throw error;
