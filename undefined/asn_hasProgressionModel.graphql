@@ -1,0 +1,23 @@
+"""Reference to a progression model used."""
+type asn_hasProgressionModel {
+  """Has Progression Model"""
+  label: String
+
+  """Reference to a progression model used."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

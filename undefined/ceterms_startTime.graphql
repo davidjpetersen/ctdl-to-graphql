@@ -1,0 +1,23 @@
+"""Start time of an event or activity."""
+type ceterms_startTime {
+  """Start Time"""
+  label: String
+
+  """Start time of an event or activity."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

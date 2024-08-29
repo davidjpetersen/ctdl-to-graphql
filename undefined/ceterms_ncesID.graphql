@@ -1,0 +1,27 @@
+"""
+Identifier comprised of a 12 digit code issued by the National Center for Education Statistics (NCES) for educational institutions where the first 7 digits are the NCES District ID.
+"""
+type ceterms_ncesID {
+  """NCES ID"""
+  label: String
+
+  """
+  Identifier comprised of a 12 digit code issued by the National Center for Education Statistics (NCES) for educational institutions where the first 7 digits are the NCES District ID.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

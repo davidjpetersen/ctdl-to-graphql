@@ -1,0 +1,27 @@
+"""
+The original competency framework which this resource is based on or derived from.
+"""
+type ceasn_source {
+  """Source"""
+  label: String
+
+  """
+  The original competency framework which this resource is based on or derived from.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

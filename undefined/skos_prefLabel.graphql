@@ -1,0 +1,23 @@
+"""Preferred language-tagged label representing this concept."""
+type skos_prefLabel {
+  """Preferred Label"""
+  label: String
+
+  """Preferred language-tagged label representing this concept."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

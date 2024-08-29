@@ -1,0 +1,27 @@
+"""
+Type of collection, list, array, or other grouping of resources; select from an existing enumeration of such types.
+"""
+type ceterms_collectionType {
+  """Collection Type"""
+  label: String
+
+  """
+  Type of collection, list, array, or other grouping of resources; select from an existing enumeration of such types.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,27 @@
+"""
+Webpage or online document that defines or explains the nature of transfer value handled by the organization.
+"""
+type ceterms_transferValueStatement {
+  """Transfer Value Statement"""
+  label: String
+
+  """
+  Webpage or online document that defines or explains the nature of transfer value handled by the organization.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

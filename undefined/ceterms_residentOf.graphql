@@ -1,0 +1,27 @@
+"""
+Geographic or political region of which a person must be a legal resident or citizen in order to be eligible for the credential.
+"""
+type ceterms_residentOf {
+  """Resident Of"""
+  label: String
+
+  """
+  Geographic or political region of which a person must be a legal resident or citizen in order to be eligible for the credential.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

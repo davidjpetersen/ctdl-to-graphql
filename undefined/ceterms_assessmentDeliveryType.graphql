@@ -1,0 +1,23 @@
+"""Delivery type for the assessment for the credential."""
+type ceterms_assessmentDeliveryType {
+  """Assessment Delivery Type"""
+  label: String
+
+  """Delivery type for the assessment for the credential."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

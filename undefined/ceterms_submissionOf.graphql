@@ -1,0 +1,27 @@
+"""
+Artifact to be submitted such as a transcript, portfolio, or an affidavit.
+"""
+type ceterms_submissionOf {
+  """Submission Of"""
+  label: String
+
+  """
+  Artifact to be submitted such as a transcript, portfolio, or an affidavit.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

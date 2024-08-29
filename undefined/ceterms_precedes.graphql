@@ -1,0 +1,23 @@
+"""Resource that logically comes after this resource."""
+type ceterms_precedes {
+  """Precedes"""
+  label: String
+
+  """Resource that logically comes after this resource."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

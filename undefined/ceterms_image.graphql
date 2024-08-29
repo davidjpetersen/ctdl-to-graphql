@@ -1,0 +1,27 @@
+"""
+Image, icon or logo that represents the entity including registered trade or service marks.
+"""
+type ceterms_image {
+  """Image"""
+  label: String
+
+  """
+  Image, icon or logo that represents the entity including registered trade or service marks.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

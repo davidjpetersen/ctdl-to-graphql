@@ -1,0 +1,23 @@
+"""Authoritative source of an entity's information."""
+type ceterms_source {
+  """Source URL"""
+  label: String
+
+  """Authoritative source of an entity's information."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

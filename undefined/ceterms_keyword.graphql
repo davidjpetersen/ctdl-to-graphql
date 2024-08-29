@@ -1,0 +1,23 @@
+"""Keyword or key phrase describing relevant aspects of an entity."""
+type ceterms_keyword {
+  """Keyword"""
+  label: String
+
+  """Keyword or key phrase describing relevant aspects of an entity."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

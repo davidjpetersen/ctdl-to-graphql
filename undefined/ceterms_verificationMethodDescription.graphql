@@ -1,0 +1,27 @@
+"""
+Textual description of the methods used to evaluate an assessment, learning opportunity, process or verificaiton service for validity or reliability.
+"""
+type ceterms_verificationMethodDescription {
+  """Verification Method Description"""
+  label: String
+
+  """
+  Textual description of the methods used to evaluate an assessment, learning opportunity, process or verificaiton service for validity or reliability.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

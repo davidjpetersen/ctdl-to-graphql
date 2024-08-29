@@ -1,0 +1,23 @@
+"""Frequency with which the credential needs to be renewed."""
+type ceterms_renewalFrequency {
+  """Renewal Frequency"""
+  label: String
+
+  """Frequency with which the credential needs to be renewed."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

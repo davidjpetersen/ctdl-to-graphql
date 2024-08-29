@@ -1,0 +1,27 @@
+"""
+Indicates the resource for which a pathway component or similar proxy resource is a stand-in.
+"""
+type ceterms_proxyFor {
+  """Proxy For"""
+  label: String
+
+  """
+  Indicates the resource for which a pathway component or similar proxy resource is a stand-in.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

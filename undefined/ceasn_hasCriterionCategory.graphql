@@ -1,0 +1,23 @@
+"""Indicates a Concept for clustering logical sets of Rubric Criteria."""
+type ceasn_hasCriterionCategory {
+  """Has Criterion Category"""
+  label: String
+
+  """Indicates a Concept for clustering logical sets of Rubric Criteria."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

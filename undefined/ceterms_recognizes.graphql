@@ -1,0 +1,27 @@
+"""
+Resource that the agent recommends, endorses, indicates preference for, or otherwise provides a positive judgment.
+"""
+type ceterms_recognizes {
+  """Recognizes"""
+  label: String
+
+  """
+  Resource that the agent recommends, endorses, indicates preference for, or otherwise provides a positive judgment.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

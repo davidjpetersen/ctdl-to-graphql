@@ -1,0 +1,27 @@
+"""
+A related competency of which this competency is a version, edition, or adaptation.
+"""
+type ceasn_isVersionOf {
+  """Is Version Of"""
+  label: String
+
+  """
+  A related competency of which this competency is a version, edition, or adaptation.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

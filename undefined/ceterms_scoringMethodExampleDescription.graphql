@@ -1,0 +1,23 @@
+"""Textual example of the method or tool used to score the assessment."""
+type ceterms_scoringMethodExampleDescription {
+  """Scoring Method Example Description"""
+  label: String
+
+  """Textual example of the method or tool used to score the assessment."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

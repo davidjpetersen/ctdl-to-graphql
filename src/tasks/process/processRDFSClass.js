@@ -3,7 +3,7 @@ import { config, files, logger, schema } from '../../utils/index.js';
 import Logger from '../../utils/logger.js';
 import { printType } from 'graphql';
 
-const { getGraphQLProperties, getGraphQLType } = schema;
+const { getGraphQLProperties, getGraphQLType, destructureClass } = schema;
 
 const { createFile } = files;
 const { types, extensions } = config;
@@ -12,19 +12,19 @@ const { GRAPHQL_EXTENSION } = extensions;
 
 const processRDFSClass = async (rdfsClass, schema) => {
   try {
-    console.log(rdfsClass);
+    const { name, fullName, id, description, fields, subClassOf } = rdfsClass;
 
-    const { classId, className, classDescription, classFields, subClassOf } =
-      rdfsClass;
-    const graphQLFields = getGraphQLProperties(classFields, schema);
+    const graphQLFields = getGraphQLProperties(fields, schema);
+    // console.log('graphQLFields', graphQLFields);
+
     const classType = getGraphQLType(
-      className,
-      classDescription,
+      fullName,
+      description,
       graphQLFields,
       subClassOf
     );
 
-    const filePath = `${RDFS_CLASS_FOLDER}/${classId}${GRAPHQL_EXTENSION}`;
+    const filePath = `${RDFS_CLASS_FOLDER}/${fullName}${GRAPHQL_EXTENSION}`;
 
     await createFile(filePath, printType(classType));
     return classType;

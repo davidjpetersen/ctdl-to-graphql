@@ -1,0 +1,27 @@
+"""
+Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+"""
+type ceterms_revokedBy {
+  """Revoked By"""
+  label: String
+
+  """
+  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

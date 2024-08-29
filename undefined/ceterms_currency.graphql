@@ -1,0 +1,27 @@
+"""
+Currency in which the monetary amount is expressed in 3-letter ISO 4217 format such as "USD".
+"""
+type ceterms_currency {
+  """Currency"""
+  label: String
+
+  """
+  Currency in which the monetary amount is expressed in 3-letter ISO 4217 format such as "USD".
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

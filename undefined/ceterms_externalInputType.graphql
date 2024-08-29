@@ -1,0 +1,27 @@
+"""
+Types of external stakeholders that provide input to an entity's processes or resources; select from an existing enumeration of such types.
+"""
+type ceterms_externalInputType {
+  """External Input Type"""
+  label: String
+
+  """
+  Types of external stakeholders that provide input to an entity's processes or resources; select from an existing enumeration of such types.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

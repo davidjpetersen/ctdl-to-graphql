@@ -1,0 +1,27 @@
+"""
+Physical location where the credential, assessment, or learning opportunity can be pursued.
+"""
+type ceterms_availableAt {
+  """Available At"""
+  label: String
+
+  """
+  Physical location where the credential, assessment, or learning opportunity can be pursued.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

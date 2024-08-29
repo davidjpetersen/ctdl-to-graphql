@@ -1,0 +1,27 @@
+"""
+Estimated time it will take to complete a credential, learning opportunity or assessment.
+"""
+type ceterms_estimatedDuration {
+  """Estimated Duration"""
+  label: String
+
+  """
+  Estimated time it will take to complete a credential, learning opportunity or assessment.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

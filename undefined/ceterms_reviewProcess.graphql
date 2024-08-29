@@ -1,0 +1,27 @@
+"""
+Entity that describes the process by which the credential, or aspects of it, are reviewed.
+"""
+type ceterms_reviewProcess {
+  """Review Process"""
+  label: String
+
+  """
+  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

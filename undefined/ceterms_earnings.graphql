@@ -1,0 +1,23 @@
+"""Entity describing aggregate credential holder earnings data."""
+type ceterms_earnings {
+  """Earnings"""
+  label: String
+
+  """Entity describing aggregate credential holder earnings data."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

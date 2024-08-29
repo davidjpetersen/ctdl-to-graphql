@@ -1,0 +1,27 @@
+"""
+Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+"""
+type ceterms_employmentOutcome {
+  """Employment Outcome"""
+  label: String
+
+  """
+  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,27 @@
+"""
+Agent with which the resource is registered because it has been vetted, approved and validated to meet specific criteria.
+"""
+type ceterms_registeredBy {
+  """Registered By"""
+  label: String
+
+  """
+  Agent with which the resource is registered because it has been vetted, approved and validated to meet specific criteria.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

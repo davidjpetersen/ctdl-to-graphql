@@ -1,0 +1,27 @@
+"""
+Name, label, or description of an artifact to be submitted such as a transcript, portfolio, or an affidavit.
+"""
+type ceterms_submissionOfDescription {
+  """Submission Of Description"""
+  label: String
+
+  """
+  Name, label, or description of an artifact to be submitted such as a transcript, portfolio, or an affidavit.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

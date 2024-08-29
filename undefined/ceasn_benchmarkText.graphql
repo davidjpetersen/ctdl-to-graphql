@@ -1,0 +1,23 @@
+"""Description of the level achieved as defined by the Rubric Criterion."""
+type ceasn_benchmarkText {
+  """Benchmark Text"""
+  label: String
+
+  """Description of the level achieved as defined by the Rubric Criterion."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

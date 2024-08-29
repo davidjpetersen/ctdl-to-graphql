@@ -1,0 +1,27 @@
+"""
+OPE ID number (U.S. Office of Postsecondary Education Identification), sometimes referred to as the Federal School Code.
+"""
+type ceterms_opeID {
+  """OPE ID"""
+  label: String
+
+  """
+  OPE ID number (U.S. Office of Postsecondary Education Identification), sometimes referred to as the Federal School Code.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

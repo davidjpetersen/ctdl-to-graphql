@@ -1,0 +1,23 @@
+"""Organization or person performing an action."""
+type ceterms_actingAgent {
+  """Acting Agent"""
+  label: String
+
+  """Organization or person performing an action."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,23 @@
+"""Post office box number for post office addresses."""
+type ceterms_postOfficeBoxNumber {
+  """Post Office Box Number"""
+  label: String
+
+  """Post office box number for post office addresses."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

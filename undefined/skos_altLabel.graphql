@@ -1,0 +1,27 @@
+"""
+Non-preferred label for the concept used to relate a concept synonym to the preferred label.
+"""
+type skos_altLabel {
+  """Alternative Label"""
+  label: String
+
+  """
+  Non-preferred label for the concept used to relate a concept synonym to the preferred label.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

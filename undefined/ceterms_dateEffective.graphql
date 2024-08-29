@@ -1,0 +1,23 @@
+"""Effective date of this resource's content."""
+type ceterms_dateEffective {
+  """Date Effective"""
+  label: String
+
+  """Effective date of this resource's content."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

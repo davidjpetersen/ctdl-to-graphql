@@ -1,0 +1,27 @@
+"""
+Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+"""
+type ceterms_jurisdiction {
+  """Jurisdiction"""
+  label: String
+
+  """
+  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

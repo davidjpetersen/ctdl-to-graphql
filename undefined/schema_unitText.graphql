@@ -1,0 +1,23 @@
+"""A string or text indicating the unit of measurement."""
+type schema_unitText {
+  """Unit Text"""
+  label: String
+
+  """A string or text indicating the unit of measurement."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,27 @@
+"""
+Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+"""
+type ceterms_preparationFrom {
+  """Preparation From"""
+  label: String
+
+  """
+  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

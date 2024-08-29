@@ -1,0 +1,23 @@
+"""Telephone number."""
+type ceterms_telephone {
+  """Telephone"""
+  label: String
+
+  """Telephone number."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

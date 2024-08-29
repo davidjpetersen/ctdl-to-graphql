@@ -1,0 +1,27 @@
+"""
+Spatial coverage of an entity indicates the place(s) to which its content applies or in which it occurres.
+"""
+type ceterms_spatialCoverage {
+  """Spatial Coverage"""
+  label: String
+
+  """
+  Spatial coverage of an entity indicates the place(s) to which its content applies or in which it occurres.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

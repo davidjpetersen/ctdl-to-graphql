@@ -1,0 +1,23 @@
+"""Years of relevant experience."""
+type ceterms_yearsOfExperience {
+  """Years of Experience"""
+  label: String
+
+  """Years of relevant experience."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

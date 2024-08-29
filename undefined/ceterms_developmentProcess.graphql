@@ -1,0 +1,27 @@
+"""
+Entity describing the process by which a credential, or aspects of it, were created.
+"""
+type ceterms_developmentProcess {
+  """Development Process"""
+  label: String
+
+  """
+  Entity describing the process by which a credential, or aspects of it, were created.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,27 @@
+"""
+A competency framework or competency from which this competency framework or competency is aligned.
+"""
+type ceasn_alignFrom {
+  """Align From"""
+  label: String
+
+  """
+  A competency framework or competency from which this competency framework or competency is aligned.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

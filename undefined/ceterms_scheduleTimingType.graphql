@@ -1,0 +1,27 @@
+"""
+Type of time at which events typically occur; select from an existing enumeration of such types.
+"""
+type ceterms_scheduleTimingType {
+  """Schedule Timing Type"""
+  label: String
+
+  """
+  Type of time at which events typically occur; select from an existing enumeration of such types.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

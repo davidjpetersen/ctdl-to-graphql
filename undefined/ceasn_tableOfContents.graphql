@@ -1,0 +1,23 @@
+"""A list of sub-units of this competency framework."""
+type ceasn_tableOfContents {
+  """Table of Contents"""
+  label: String
+
+  """A list of sub-units of this competency framework."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

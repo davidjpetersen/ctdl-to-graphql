@@ -1,0 +1,23 @@
+"""Agent making a statement based on fact or belief."""
+type ceterms_assertedBy {
+  """Asserted By"""
+  label: String
+
+  """Agent making a statement based on fact or belief."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,23 @@
+"""Quotient of two values of the data set, expressed as a percentage."""
+type qdata_percentage {
+  """Percentage"""
+  label: String
+
+  """Quotient of two values of the data set, expressed as a percentage."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

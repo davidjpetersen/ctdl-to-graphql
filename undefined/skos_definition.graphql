@@ -1,0 +1,23 @@
+"""Supplies a complete explanation of the intended meaning of a concept."""
+type skos_definition {
+  """Definition"""
+  label: String
+
+  """Supplies a complete explanation of the intended meaning of a concept."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

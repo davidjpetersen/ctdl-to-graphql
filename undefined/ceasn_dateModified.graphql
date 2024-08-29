@@ -1,0 +1,27 @@
+"""
+The date on which this resource was most recently modified in some way.
+"""
+type ceasn_dateModified {
+  """Date Modified"""
+  label: String
+
+  """
+  The date on which this resource was most recently modified in some way.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

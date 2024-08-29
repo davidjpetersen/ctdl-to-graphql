@@ -1,0 +1,27 @@
+"""
+Whether or not two or more participants are required to complete the assessment activity.
+"""
+type ceterms_hasGroupParticipation {
+  """Has Group Participation"""
+  label: String
+
+  """
+  Whether or not two or more participants are required to complete the assessment activity.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

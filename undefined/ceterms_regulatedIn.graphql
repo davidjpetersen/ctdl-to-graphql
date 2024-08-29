@@ -1,0 +1,27 @@
+"""
+Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+"""
+type ceterms_regulatedIn {
+  """Regulated In"""
+  label: String
+
+  """
+  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

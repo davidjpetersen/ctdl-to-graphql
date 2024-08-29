@@ -1,0 +1,23 @@
+"""Resource in a Collection."""
+type ceterms_hasMember {
+  """Has Member"""
+  label: String
+
+  """Resource in a Collection."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

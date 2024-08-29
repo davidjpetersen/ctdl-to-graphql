@@ -1,0 +1,27 @@
+"""
+Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+"""
+type ceterms_offeredIn {
+  """Offered In"""
+  label: String
+
+  """
+  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

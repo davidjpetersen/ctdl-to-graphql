@@ -1,0 +1,23 @@
+"""Indicates another entity of which this entity is a component."""
+type ceterms_isPartOf {
+  """Is Part Of"""
+  label: String
+
+  """Indicates another entity of which this entity is a component."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

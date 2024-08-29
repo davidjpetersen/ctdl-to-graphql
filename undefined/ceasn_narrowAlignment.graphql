@@ -1,0 +1,27 @@
+"""
+This competency covers all of the relevant concepts in the referenced competency as well as relevant concepts not found in the referenced competency.
+"""
+type ceasn_narrowAlignment {
+  """Narrow Alignment"""
+  label: String
+
+  """
+  This competency covers all of the relevant concepts in the referenced competency as well as relevant concepts not found in the referenced competency.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

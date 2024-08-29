@@ -1,0 +1,27 @@
+"""
+Assertion by an agent that this resource has a specific workforce demand level.
+"""
+type ceterms_inDemandAction {
+  """In Demand Action"""
+  label: String
+
+  """
+  Assertion by an agent that this resource has a specific workforce demand level.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

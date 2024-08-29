@@ -1,0 +1,23 @@
+"""Reference to a service that is used to verify this Credential."""
+type ceterms_usesVerificationService {
+  """Uses Verification Service"""
+  label: String
+
+  """Reference to a service that is used to verify this Credential."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

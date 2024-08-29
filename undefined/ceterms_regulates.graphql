@@ -1,0 +1,27 @@
+"""
+Credential, learning opportunity, assessment or organization that this quality assurance organization monitors, including enforcement of applicable legal requirements or standards.
+"""
+type ceterms_regulates {
+  """Regulates"""
+  label: String
+
+  """
+  Credential, learning opportunity, assessment or organization that this quality assurance organization monitors, including enforcement of applicable legal requirements or standards.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

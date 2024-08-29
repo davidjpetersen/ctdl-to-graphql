@@ -1,0 +1,23 @@
+"""Alignment map owned by the agent."""
+type ceterms_hasAlignmentMap {
+  """Has Alignment Map"""
+  label: String
+
+  """Alignment map owned by the agent."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

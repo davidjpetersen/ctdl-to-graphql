@@ -1,7 +1,7 @@
 import { files, schema } from '../utils/index.js';
 import {
+  processRDFProperty,
   processRDFSClass,
-  rdfProperty,
   skosConcept,
   skosConceptScheme,
 } from './process/index.js';
@@ -25,25 +25,26 @@ const {
  * to the console.
  *
  * @param {Object} item - The item to be processed.
- * @param {Object[]} combined - The combined CTDL and ASN schemas.
+ * @param {Object[]} schema - The combined CTDL and ASN schemas.
  */
-const processItem = (item, combined) => {
+const processItem = (item, schema) => {
+  // console.log(`Processing ${item} of type ${item.type}`); // Log the type being processed
   // Define the processors for different types of items
   const processors = {
-    rdfs_Class: () => processRDFSClass(item, combined),
-    rdf_Property: () => rdfProperty(item, combined),
-    skos_ConceptScheme: () => skosConceptScheme(item, combined),
-    skos_Concept: () => skosConcept(item, combined),
+    'rdfs:Class': () => processRDFSClass(item, schema),
+    'rdf:Property': () => processRDFProperty(item, schema),
+    'skos:ConceptScheme': () => skosConceptScheme(item, schema),
+    'skos:Concept': () => skosConcept(item, schema),
   };
 
   // Dispatch the processing of the item to the appropriate processor
-  const processor = processors[item['@type']];
+  const processor = processors[item.type];
 
   if (processor) {
-    console.log(`Processing ${item['@id']} of type ${item['@type']}`); // Log the type being processed
+    // console.log(`Processing ${item.id} of type ${item.type}`); // Log the type being processed
     processor(); // If a processor is found, execute it
   } else {
-    console.log('Unknown type', item['@type']); // If no processor is found, log the unknown type to the console
+    console.log('Unknown type', item.type); // If no processor is found, log the unknown type to the console
   }
 };
 
@@ -59,27 +60,36 @@ const processItem = (item, combined) => {
  */
 const createSchema = async schemas => {
   try {
-    /// Check if the schemas object is valid and not empty
+    // Check if the schemas object is valid and not empty
     if (typeof schemas !== 'object' || Object.keys(schemas).length === 0) {
       throw new Error('Invalid or empty schemas object');
     }
 
     // Read and parse schema data from each file
     const schemaPromises = Object.entries(schemas).map(
-      async ([schemaName, schemaPath]) => {
-        const schemaData = await files.readFile(schemaPath);
-        return JSON.parse(schemaData);
+      async ([, schemaItem]) => {
+        // Check if file exists
+        if (!files.checkFileExists(schemaItem.path)) {
+          throw new Error(`Schema file not found: ${schemaItem.path}`);
+        }
+        let schemaData = await files.readFile(schemaItem.path);
+
+        // Parse the JSON string into a JavaScript object
+        schemaData = JSON.parse(schemaData);
+        // schemaData = schemaData['graph'];
+        return schemaData;
       }
     );
 
     // Combine the parsed schema data from all files
     const allSchemaItems = (await Promise.all(schemaPromises)).flat();
 
+    // console.log('all:', allSchemaItems);
     // Loop through all items of both schemas and process them
     allSchemaItems.forEach(item => processItem(item, allSchemaItems));
   } catch (error) {
     console.error('Error creating schema:', error);
-    throw error; // or handle it appropriately
+    throw error;
   }
 };
 

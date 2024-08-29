@@ -1,0 +1,27 @@
+"""
+Learning object or resource that is used as part of a learning activity.
+"""
+type ceterms_targetLearningResource {
+  """Target Learning Resource"""
+  label: String
+
+  """
+  Learning object or resource that is used as part of a learning activity.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

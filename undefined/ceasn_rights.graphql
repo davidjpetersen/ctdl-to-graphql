@@ -1,0 +1,23 @@
+"""Information about rights held in and over this resource."""
+type ceasn_rights {
+  """Rights"""
+  label: String
+
+  """Information about rights held in and over this resource."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

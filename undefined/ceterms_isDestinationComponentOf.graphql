@@ -1,0 +1,23 @@
+"""Pathway for which this resource is the goal or destination."""
+type ceterms_isDestinationComponentOf {
+  """Is Destination Component Of"""
+  label: String
+
+  """Pathway for which this resource is the goal or destination."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

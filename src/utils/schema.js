@@ -14,56 +14,17 @@ import { config } from './index.js';
 
 const { mappings } = config;
 
-const destructureClass = item => ({
-  classId: item['@id'],
-  className: item['@id'].split('_')[1],
-  classDescription: item['dct_description']?.['en-US'] ?? '',
-  classFields: item['meta_domainFor'] ?? [],
-  subClassOf: item['rdfs_subClassOf'] ?? [],
-});
-
 /**
- * Converts an RDF property to an object that is easier to work with.
+ * Generates a string representation of a property's metadata, including its name, ID, description, and comment.
  *
- * @param {Object} property - The RDF property to be destructured.
- * @param {string} property['@id'] - The ID of the RDF property.
- * @param {string[]} property['schema_rangeIncludes'] - The accepted values for the RDF property.
- * @param {Object} property['dct_description'] - The description of the RDF property.
- * @param {string} property['dct_description']['en-US'] - The description of the RDF property in English.
- * @param {string} property['rdfs_comment'] - The comment for the RDF property.
- * @returns {Object} - An object with the destructured properties of the RDF property.
+ * @param {string} name - The name of the property.
+ * @param {string} id - The ID of the property.
+ * @param {string} description - The description of the property.
+ * @param {string} comment - The comment for the property.
+ * @returns {string} - A string representation of the property's metadata.
  */
-const destructureProperty = property => {
-  const {
-    '@id': id,
-    schema_rangeIncludes: acceptedValues,
-    dct_description,
-    rdfs_comment,
-  } = property;
-
-  const propName = id.split('_')[1];
-  const propId = id;
-  const propAcceptedValues = acceptedValues || [];
-  const propDescription = dct_description?.['en-US'] || '';
-  const propComment = rdfs_comment || '';
-
-  return { propName, propId, propAcceptedValues, propDescription, propComment };
-};
-
-/**
- * Gets a description for a property based on its destructured properties.
- *
- * @param {Object} property - The property to get the description for.
- * @param {string} property.propName - The name of the property.
- * @param {string} property.propId - The ID of the property.
- * @param {string} property.propDescription - The description of the property.
- * @param {string} property.propComment - The comment for the property.
- * @returns {string} - A description of the property, combining the name, ID, description, and comment.
- */
-const getPropertyDescription = property => {
-  const { id, name, description, comment } = destructureProperty(property);
-
-  return [name, id, description, comment].filter(Boolean).join(' - ');
+const getPropertyDescription = (propName, id, description, comment) => {
+  return [propName, id, description, comment].filter(Boolean).join(' - ');
 };
 
 /**
@@ -71,10 +32,12 @@ const getPropertyDescription = property => {
  *
  * @param {string} propertyName - The name of the property to retrieve.
  * @param {Object[]} schema - The schema object containing the properties.
- * @returns {Object} - The property object from the schema, or undefined if not found.
+
+ * @returns {Object|undefined} - The property object from the schema, or undefined if not found.
  */
-const getPropertyFromSchema = (propertyName, schema) =>
-  schema.find(item => item['@id'] === propertyName);
+const getPropertyFromSchema = (propertyName, schema) => {
+  return schema.find(item => item.id === propertyName) || undefined;
+};
 
 /**
  * Maps a property to a GraphQL type based on the accepted values for that property.
@@ -92,17 +55,25 @@ const getPropertyFromSchema = (propertyName, schema) =>
  * @returns {GraphQLType} - The GraphQL type for the property.
  */
 const getPropertyType = (propertyName, acceptedValues) => {
-  if (acceptedValues?.length > 1) {
+  if (!acceptedValues || acceptedValues.length === 0) {
+    throw new Error('Property has no accepted values');
+  }
+  if (acceptedValues.length > 1) {
     return new GraphQLUnionType({
       name: `${propertyName}Union`,
       types: acceptedValues.map(
-        typeName => new GraphQLObjectType({ name: typeName, fields: {} })
+        typeName =>
+          new GraphQLObjectType({
+            name: typeName.replace(':', '_'),
+            fields: {},
+          })
       ),
       resolveType: () => null,
     });
   }
-  if (acceptedValues?.length === 1) {
-    return mappings[acceptedValues[0]];
+  if (acceptedValues.length === 1) {
+    // console.log('Accepted Value', acceptedValues[0]);
+    return mappings[acceptedValues[0]] || acceptedValues[0].replace(':', '_');
   }
   return GraphQLString;
 };
@@ -121,22 +92,21 @@ const getPropertyType = (propertyName, acceptedValues) => {
  */
 const getGraphQLProperties = (classFields, schema) => {
   if (!classFields) return {};
-  const fields = Object.fromEntries(
+
+  return Object.fromEntries(
     Object.entries(classFields).map(([, propertyId]) => {
-      const property = getPropertyFromSchema(propertyId, schema);
-      const { propName: propertyName, propAcceptedValues: acceptedValues } =
-        destructureProperty(property);
+      const { name, id, acceptedValues, description, comment } =
+        getPropertyFromSchema(propertyId, schema);
 
       return [
-        propertyName,
+        name,
         {
-          type: getPropertyType(propertyName, acceptedValues),
-          description: getPropertyDescription(property),
+          type: getPropertyType(name, acceptedValues),
+          description: getPropertyDescription(name, id, description, comment),
         },
       ];
     })
   );
-  return fields;
 };
 
 const getGraphQLType = (
@@ -145,32 +115,36 @@ const getGraphQLType = (
   graphqlFields,
   subClassOf
 ) => {
-  if (!className || !classDescription || !graphqlFields) {
-    throw new Error(
-      'className, classDescription, and graphqlFields are required'
-    );
+  if (!className) {
+    throw new Error('className is required');
   }
 
-  return new GraphQLObjectType({
+  if (!graphqlFields) {
+    throw new Error('graphqlFields is required');
+  }
+
+  const graphQLTypeConfig = {
     name: className,
     description: `${className} - ${classDescription}`,
     fields: () => graphqlFields,
+  };
 
-    interfaces: subClassOf
-      ? subClassOf.map(
-          subClass =>
-            new GraphQLObjectType({
-              name: subClass.split('_')[1],
-              fields: () => ({}),
-            })
-        )
-      : [],
-  });
+  if (subClassOf) {
+    // Create a dummy subclass if the class is a subclass
+    const subClassInterface = subClassOf.map(
+      subClass =>
+        new GraphQLObjectType({
+          name: subClass.replace(':', '_'),
+          fields: () => ({}),
+        })
+    );
+    graphQLTypeConfig.interfaces = subClassInterface;
+  }
+
+  return new GraphQLObjectType(graphQLTypeConfig);
 };
 
 export default {
-  destructureClass,
-  destructureProperty,
   getGraphQLProperties,
   getGraphQLType,
   getPropertyDescription,

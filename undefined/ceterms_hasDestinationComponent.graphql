@@ -1,0 +1,23 @@
+"""Goal or destination node of the pathway."""
+type ceterms_hasDestinationComponent {
+  """Has Destination Component"""
+  label: String
+
+  """Goal or destination node of the pathway."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

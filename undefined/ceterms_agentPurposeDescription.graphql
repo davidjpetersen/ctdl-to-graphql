@@ -1,0 +1,27 @@
+"""
+Short, key phrases describing the primary purpose of an organization as might be derived from the "about" page of it's website.
+"""
+type ceterms_agentPurposeDescription {
+  """Agent Purpose Description"""
+  label: String
+
+  """
+  Short, key phrases describing the primary purpose of an organization as might be derived from the "about" page of it's website.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

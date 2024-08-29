@@ -1,0 +1,27 @@
+"""
+Dun & Bradstreet DUNS number for identifying an organization or business person.
+"""
+type ceterms_duns {
+  """DUNS"""
+  label: String
+
+  """
+  Dun & Bradstreet DUNS number for identifying an organization or business person.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

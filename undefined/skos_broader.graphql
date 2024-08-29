@@ -1,0 +1,23 @@
+"""Concept that is broader in some way than this concept."""
+type skos_broader {
+  """Broader"""
+  label: String
+
+  """Concept that is broader in some way than this concept."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

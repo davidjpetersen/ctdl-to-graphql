@@ -1,0 +1,27 @@
+"""
+Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+"""
+type ceterms_broadAlignment {
+  """Broad Alignment"""
+  label: String
+
+  """
+  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

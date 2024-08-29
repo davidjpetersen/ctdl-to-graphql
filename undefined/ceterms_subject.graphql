@@ -1,0 +1,27 @@
+"""
+Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+"""
+type ceterms_subject {
+  """Subject"""
+  label: String
+
+  """
+  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

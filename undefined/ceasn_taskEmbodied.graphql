@@ -1,0 +1,27 @@
+"""
+Specifically defined piece of work embodied either directly or indirectly in this resource.
+"""
+type ceasn_taskEmbodied {
+  """Task Embodied"""
+  label: String
+
+  """
+  Specifically defined piece of work embodied either directly or indirectly in this resource.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

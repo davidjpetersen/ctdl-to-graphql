@@ -1,0 +1,27 @@
+"""
+More specialized profession, trade, or career field that is encompassed by the one being described.
+"""
+type ceterms_hasSpecialization {
+  """Has Specialization"""
+  label: String
+
+  """
+  More specialized profession, trade, or career field that is encompassed by the one being described.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

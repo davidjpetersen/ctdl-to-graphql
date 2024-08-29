@@ -1,0 +1,23 @@
+"""Competency framework that this competency is a part of."""
+type ceasn_isPartOf {
+  """Is Part Of"""
+  label: String
+
+  """Competency framework that this competency is a part of."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

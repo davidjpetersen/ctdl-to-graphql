@@ -1,0 +1,27 @@
+"""
+Resource referenced defines a condition by which this resource is satisfied in full or in part.
+"""
+type ceterms_hasCondition {
+  """Has Condition"""
+  label: String
+
+  """
+  Resource referenced defines a condition by which this resource is satisfied in full or in part.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,23 @@
+"""Resource over which the organization or person claims legal title."""
+type ceterms_owns {
+  """Owns"""
+  label: String
+
+  """Resource over which the organization or person claims legal title."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

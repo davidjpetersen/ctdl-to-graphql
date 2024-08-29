@@ -1,0 +1,23 @@
+"""Description of the methods used to conduct learning."""
+type ceterms_learningMethodDescription {
+  """Learning Method Description"""
+  label: String
+
+  """Description of the methods used to conduct learning."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

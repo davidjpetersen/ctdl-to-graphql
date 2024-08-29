@@ -1,0 +1,23 @@
+"""Date the organization was founded."""
+type ceterms_foundingDate {
+  """Founding Date"""
+  label: String
+
+  """Date the organization was founded."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

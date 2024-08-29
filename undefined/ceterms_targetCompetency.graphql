@@ -1,0 +1,23 @@
+"""A competency relevant to the resource being described."""
+type ceterms_targetCompetency {
+  """Target Competency"""
+  label: String
+
+  """A competency relevant to the resource being described."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,27 @@
+"""
+This resource receives transfer value from the referenced Transfer Value Profile.
+"""
+type ceterms_receivesTransferValueFrom {
+  """Receives Transfer Value From"""
+  label: String
+
+  """
+  This resource receives transfer value from the referenced Transfer Value Profile.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

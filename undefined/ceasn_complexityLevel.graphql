@@ -1,0 +1,27 @@
+"""
+The expected performance level of a learner or professional as defined by a competency.
+"""
+type ceasn_complexityLevel {
+  """Complexity Level"""
+  label: String
+
+  """
+  The expected performance level of a learner or professional as defined by a competency.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

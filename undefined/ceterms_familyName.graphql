@@ -1,0 +1,23 @@
+"""Family name such as the last name of a person in the U.S.."""
+type ceterms_familyName {
+  """Family Name"""
+  label: String
+
+  """Family name such as the last name of a person in the U.S.."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

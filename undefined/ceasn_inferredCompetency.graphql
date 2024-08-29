@@ -1,0 +1,27 @@
+"""
+Competency deduced or arrive at by reasoning on the competency being described.
+"""
+type ceasn_inferredCompetency {
+  """Inferred Competency"""
+  label: String
+
+  """
+  Competency deduced or arrive at by reasoning on the competency being described.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

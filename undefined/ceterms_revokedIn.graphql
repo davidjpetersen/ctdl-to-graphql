@@ -1,0 +1,27 @@
+"""
+Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+"""
+type ceterms_revokedIn {
+  """Revoked In"""
+  label: String
+
+  """
+  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

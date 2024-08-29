@@ -1,0 +1,23 @@
+"""Alignment map to which the statement belongs."""
+type ceterms_inAlignmentMap {
+  """In Alignment Map"""
+  label: String
+
+  """Alignment map to which the statement belongs."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,23 @@
+"""The publication status of the resource."""
+type ceasn_publicationStatusType {
+  """Publication Status Type"""
+  label: String
+
+  """The publication status of the resource."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

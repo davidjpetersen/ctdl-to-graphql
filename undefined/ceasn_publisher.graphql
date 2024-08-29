@@ -1,0 +1,23 @@
+"""An agent responsible for making this resource available."""
+type ceasn_publisher {
+  """Publisher"""
+  label: String
+
+  """An agent responsible for making this resource available."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

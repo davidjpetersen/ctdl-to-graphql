@@ -1,0 +1,23 @@
+"""Awarded credential resulting from an action."""
+type ceterms_resultingAward {
+  """Resulting Award"""
+  label: String
+
+  """Awarded credential resulting from an action."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

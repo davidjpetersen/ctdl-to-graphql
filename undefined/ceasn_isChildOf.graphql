@@ -1,0 +1,27 @@
+"""
+The referenced resource is higher in some arbitrary hierarchy than this resource.
+"""
+type ceasn_isChildOf {
+  """Is Child Of"""
+  label: String
+
+  """
+  The referenced resource is higher in some arbitrary hierarchy than this resource.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

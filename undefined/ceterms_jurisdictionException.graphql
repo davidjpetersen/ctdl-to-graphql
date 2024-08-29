@@ -1,0 +1,27 @@
+"""
+Geographic or political region in which the credential is not formally recognized or an organization has no authority to act .
+"""
+type ceterms_jurisdictionException {
+  """Jurisdiction Exception"""
+  label: String
+
+  """
+  Geographic or political region in which the credential is not formally recognized or an organization has no authority to act .
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

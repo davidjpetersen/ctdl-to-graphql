@@ -1,0 +1,23 @@
+"""Organization or person performing the process."""
+type ceterms_processingAgent {
+  """Processing Agent"""
+  label: String
+
+  """Organization or person performing the process."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

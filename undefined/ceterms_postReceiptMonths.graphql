@@ -1,0 +1,27 @@
+"""
+Number of months after earning a credential when employment and earnings data is collected.
+"""
+type ceterms_postReceiptMonths {
+  """Post Receipt Months"""
+  label: String
+
+  """
+  Number of months after earning a credential when employment and earnings data is collected.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

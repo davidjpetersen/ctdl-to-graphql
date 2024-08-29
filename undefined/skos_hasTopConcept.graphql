@@ -1,0 +1,23 @@
+"""Concept of the scheme at the top of a hierarchy of narrower concepts."""
+type skos_hasTopConcept {
+  """Has Top Concept"""
+  label: String
+
+  """Concept of the scheme at the top of a hierarchy of narrower concepts."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

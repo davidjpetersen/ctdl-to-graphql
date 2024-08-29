@@ -1,0 +1,27 @@
+"""
+Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+"""
+type ceterms_revocation {
+  """Revocation"""
+  label: String
+
+  """
+  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

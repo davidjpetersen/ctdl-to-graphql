@@ -1,0 +1,27 @@
+"""
+Textual description of an individual concept or competency in a formally defined framework.
+"""
+type ceterms_targetNodeDescription {
+  """Target Description"""
+  label: String
+
+  """
+  Textual description of an individual concept or competency in a formally defined framework.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

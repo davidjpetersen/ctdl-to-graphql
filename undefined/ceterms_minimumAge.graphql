@@ -1,0 +1,23 @@
+"""Minimum allowed age at which a person is eligible for the credential."""
+type ceterms_minimumAge {
+  """Minimum Age"""
+  label: String
+
+  """Minimum allowed age at which a person is eligible for the credential."""
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

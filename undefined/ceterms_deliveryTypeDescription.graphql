@@ -1,0 +1,27 @@
+"""
+Detailed description of the delivery type of an assessment or learning opportunity.
+"""
+type ceterms_deliveryTypeDescription {
+  """Delivery Type Description"""
+  label: String
+
+  """
+  Detailed description of the delivery type of an assessment or learning opportunity.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}

@@ -1,0 +1,27 @@
+"""
+Types of direct costs associated with earning or completing a credential, assessment or learning opportunity; select from an existing enumeration of such types.
+"""
+type ceterms_directCostType {
+  """Direct Cost Type"""
+  label: String
+
+  """
+  Types of direct costs associated with earning or completing a credential, assessment or learning opportunity; select from an existing enumeration of such types.
+  """
+  comment: String
+
+  """Status of the property"""
+  status: String
+
+  """Change history URL"""
+  changeHistory: String
+
+  """Sub-properties"""
+  subPropertyOf: [String]
+
+  """Used by"""
+  usedBy: [String]
+
+  """Accepted values"""
+  acceptedValues: [String]
+}
