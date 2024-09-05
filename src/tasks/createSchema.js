@@ -1,5 +1,6 @@
-import processItem from './process/processItem.js';
-import retrieveSchemas from './process/retrieveSchemas.js';
+import { files } from '../utils/index.js';
+import processClass from './process/processClass.js';
+const { readFile } = files;
 /**
  * Asynchronously creates a schema by reading and parsing schema data from multiple files.
  *
@@ -10,21 +11,14 @@ import retrieveSchemas from './process/retrieveSchemas.js';
  * @param {Object} schemas - An object of schema names and their corresponding file paths.
  * @returns {Promise<void>} - A Promise that resolves when the schema creation process is complete.
  */
-const createSchema = async schemas => {
+const createSchema = async filePath => {
   try {
-    // Check if the schemas object is valid and not empty
-    if (typeof schemas !== 'object' || Object.keys(schemas).length === 0) {
-      throw new Error('Invalid or empty schemas object');
-    }
+    const schema = JSON.parse(await readFile(filePath));
+    const { classes, properties } = schema;
 
-    // Read and parse schema data from each file
-    const allSchemaItems = await retrieveSchemas(schemas);
-
-    // console.log('all:', allSchemaItems);
-    // Loop through all items of both schemas and process them
-    allSchemaItems.forEach(item => processItem(item, allSchemaItems));
+    classes.forEach(item => processClass(item, schema));
   } catch (error) {
-    console.error('Error creating schema:', error);
+    console.error('Error creating schema:', error.message);
     throw error;
   }
 };

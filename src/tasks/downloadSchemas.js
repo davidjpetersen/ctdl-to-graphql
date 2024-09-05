@@ -1,6 +1,6 @@
 import { config, files, http } from '../utils/index.js';
 
-const { regex, schemas } = config;
+const { regex, replacements } = config;
 const { checkFileExists, createFile } = files;
 const { getURL } = http;
 const { COLON_REGEX } = regex;
@@ -20,33 +20,6 @@ function renameKeys(obj, renameFn) {
 }
 
 function renameKeyTerms(key) {
-  // List of specific terms to replace
-  const replacements = {
-    '@type': 'type',
-    '@id': 'id',
-    'meta:domainFor': 'fields',
-    'schema:rangeIncludes': 'acceptedValues',
-    'rdfs:label': 'label',
-    'rdfs:comment': 'comment',
-    'dct:description': 'description',
-    'owl:equivalentProperty': 'equivalentProperty',
-    'vann:usageNote': 'usageNote',
-    'vs:term_status': 'status',
-    'meta:changeHistory': 'changeHistory',
-    'schema:domainIncludes': 'usedBy',
-    'rdfs:subPropertyOf': 'subPropertyOf',
-    'rdfs:subClassOf': 'subClassOf',
-    'owl:equivalentClass': 'equivalentClass',
-    'skos:prefLabel': 'prefLabel',
-    'skos:definition': 'definition',
-    'skos:broader': 'broader',
-    'skos:narrower': 'narrower',
-    'skos:inScheme': 'inScheme',
-    'skos:topConceptOf': 'topConceptOf',
-    'skos:narrowMatch': 'narrowMatch',
-    'skos:relatedMatch': 'relatedMatch',
-  };
-
   // Check for specific term replacements
   if (replacements[key]) {
     key = replacements[key];
@@ -81,19 +54,16 @@ const addNameProperty = arr => {
   }));
 };
 
-const downloadSchemas = async schemas => {
-  for (const schema of Object.values(schemas)) {
-    const { name, url, path } = schema;
+const downloadSchema = async schema => {
+  const { name, url, path } = schema;
 
-    const content = await http.getURL(url);
-    const cleanedContent = renameKeys(content['@graph'], renameKeyTerms);
-    const langFreeContent = stripLangStrings(cleanedContent);
-    const namedContent = addNameProperty(langFreeContent);
+  const content = await http.getURL(url);
+  // const cleanedContent = renameKeys(content['@graph'], renameKeyTerms);
+  // const langFreeContent = stripLangStrings(cleanedContent);
+  // const namedContent = addNameProperty(langFreeContent);
+  // const jsonContent = JSON.stringify(namedContent, null, 2);
 
-    const jsonContent = JSON.stringify(namedContent, null, 2);
-
-    await files.createFile(path, jsonContent);
-  }
+  await files.createFile(path, JSON.stringify(content, null, 2));
 };
 
-export default downloadSchemas;
+export default downloadSchema;

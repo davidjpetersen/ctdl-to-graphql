@@ -4,45 +4,25 @@ import {
   GraphQLString,
   printType,
 } from 'graphql';
-import { config, files } from '../../utils/index.js';
+import { config, files, schema } from '../../utils/index.js';
 
+const { getGraphQLType, getGraphQLProperties } = schema;
 const { extensions, types } = config;
 const { createFile } = files;
 const { RDF_PROPERTY_FOLDER } = types;
 const { GRAPHQL_EXTENSION } = extensions;
 const processRDFProperty = async (item, schema) => {
-  // Example of creating a GraphQL field definition
-
-  const property = new GraphQLObjectType({
-    name: item.fullName,
-    description: item.comment || '',
-    fields: {
-      label: { type: GraphQLString, description: item.label || '' },
-      comment: { type: GraphQLString, description: item.comment || '' },
-      status: { type: GraphQLString, description: 'Status of the property' },
-      changeHistory: {
-        type: GraphQLString,
-        description: 'Change history URL',
-      },
-
-      subPropertyOf: {
-        type: new GraphQLList(GraphQLString),
-        description: 'Sub-properties',
-      },
-      usedBy: {
-        type: new GraphQLList(GraphQLString),
-        description: 'Used by',
-      },
-      acceptedValues: {
-        type: new GraphQLList(GraphQLString),
-        description: 'Accepted values',
-      },
-    },
-  });
-
-  const filePath = `${RDF_PROPERTY_FOLDER}/${item.fullName}${GRAPHQL_EXTENSION}`;
-  const writeable = printType(property);
-
-  await createFile(filePath, writeable);
+  // const { fullName, comment, acceptedValues, subPropertyOf } = item;
+  // const graphQLFields = getGraphQLProperties(acceptedValues, schema);
+  // const property = getGraphQLType(
+  //   fullName,
+  //   comment,
+  //   graphQLFields,
+  //   subPropertyOf
+  // );
+  // const filePath = `${RDF_PROPERTY_FOLDER}/${item.fullName}${GRAPHQL_EXTENSION}`;
+  // const writeable = printType(property);
+  // await createFile(filePath, writeable);
+  // console.log('Process RDF Property');
 };
 export default processRDFProperty;

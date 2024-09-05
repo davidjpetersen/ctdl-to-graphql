@@ -3,7 +3,7 @@ import files from '../utils/files.js';
 
 const { output } = config;
 const { cleanDir } = files;
-const cleanDirs = async () => {
+const cleanDirs = async (files, output) => {
   await cleanDir(output);
 };
 

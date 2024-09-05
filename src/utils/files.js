@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import prettier from 'prettier';
 
 // Delete the contents of the output folder and recreate it.
 const cleanDir = async folderPath => {

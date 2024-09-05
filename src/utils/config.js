@@ -3,15 +3,36 @@ import path from 'path';
 dotenv.config();
 
 const vars = process.env;
-const { ASN_SCHEMA_URL, CTDL_SCHEMA_URL, INPUT_FOLDER_PATH, OUTPUT_FILE_PATH } =
-  vars;
+const {
+  ASN_MAPPING_URL,
+  CTDL_MAPPING_URL,
+  INPUT_FOLDER_PATH,
+  OUTPUT_FILE_PATH,
+  OUTPUT_FOLDER_PATH,
+} = vars;
 
 const getInputFilePath = filename => {
   return path.join(INPUT_FOLDER_PATH, filename);
 };
 
+const getOutputFilePath = filename => {
+  return path.join(OUTPUT_FOLDER_PATH, filename);
+};
+
 // Configuration object by stage
 const config = {
+  schemas: [
+    {
+      name: 'ctdl',
+      url: CTDL_MAPPING_URL,
+      path: getInputFilePath('ctdl.json'),
+    },
+    {
+      name: 'asn',
+      url: ASN_MAPPING_URL,
+      path: getInputFilePath('asn.json'),
+    },
+  ],
   extensions: {
     JSON_EXTENSION: '.json',
     GRAPHQL_EXTENSION: '.graphql',
@@ -19,23 +40,11 @@ const config = {
   regex: {
     COLON_REGEX: /:/g,
   },
-  schemas: [
-    {
-      name: 'ctdl',
-      url: CTDL_SCHEMA_URL,
-      path: getInputFilePath('/raw/ctdl.json'),
-    },
-    {
-      name: 'asn',
-      url: ASN_SCHEMA_URL,
-      path: getInputFilePath('/raw/asn.json'),
-    },
-  ],
+
   types: {
-    RDFS_CLASS_FOLDER: getInputFilePath('/rdfs/Class'),
-    RDF_PROPERTY_FOLDER: getInputFilePath('/rdf/Property'),
-    ctdl: getInputFilePath('/ctdl/Types.json'),
-    asn: getInputFilePath('/asn/Types.json'),
+    CLASSES_FOLDER: getInputFilePath('/classes'),
+    PROPERTIES_FOLDER: getInputFilePath('/properties'),
+    MERGED_FILE_PATH: getInputFilePath('merged.json'),
   },
   properties: {
     ctdl: getInputFilePath('/ctdl/Props.json'),
@@ -58,7 +67,34 @@ const config = {
     'skos:Concept': 'GraphQLString',
     'ceasn:CriterionLevel': 'ceasn_CriterionLevel',
   },
+  // List of replacements for downloadSchemas.js to clean the schema data.
+  replacements: {
+    '@type': 'type',
+    '@id': 'id',
+    'meta:domainFor': 'fields',
+    'schema:rangeIncludes': 'acceptedValues',
+    'rdfs:label': 'label',
+    'rdfs:comment': 'comment',
+    'dct:description': 'description',
+    'owl:equivalentProperty': 'equivalentProperty',
+    'vann:usageNote': 'usageNote',
+    'vs:term_status': 'status',
+    'meta:changeHistory': 'changeHistory',
+    'schema:domainIncludes': 'usedBy',
+    'rdfs:subPropertyOf': 'subPropertyOf',
+    'rdfs:subClassOf': 'subClassOf',
+    'owl:equivalentClass': 'equivalentClass',
+    'skos:prefLabel': 'prefLabel',
+    'skos:definition': 'definition',
+    'skos:broader': 'broader',
+    'skos:narrower': 'narrower',
+    'skos:inScheme': 'inScheme',
+    'skos:topConceptOf': 'topConceptOf',
+    'skos:narrowMatch': 'narrowMatch',
+    'skos:relatedMatch': 'relatedMatch',
+  },
   getInputFilePath,
+  getOutputFilePath,
 };
 
 export default config;
