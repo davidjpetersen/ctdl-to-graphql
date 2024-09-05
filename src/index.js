@@ -23,13 +23,15 @@ const schemaProcessor = new SchemaProcessor(config, files);
 const tasks = [
   {
     title: 'Clean directories',
-
     task: () => schemaProcessor.cleanDirs(),
   },
   {
     title: 'Load schemas',
-
     task: () => schemaProcessor.loadSchema(),
+  },
+  {
+    title: 'Process schemas',
+    task: () => schemaProcessor.processSchemas(),
   },
 ];
 
