@@ -4,6 +4,7 @@ dotenv.config();
 
 const vars = process.env;
 const {
+  FRESH_START,
   ASN_MAPPING_URL,
   CTDL_MAPPING_URL,
   INPUT_FOLDER_PATH,
@@ -21,7 +22,7 @@ const getOutputFilePath = filename => {
 
 // Configuration object by stage
 const config = {
-  freshStart: false,
+  freshStart: FRESH_START,
   schemas: [
     {
       name: 'ctdl',

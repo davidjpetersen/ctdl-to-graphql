@@ -29,6 +29,7 @@ export default class SchemaProcessor {
       cleanDir(getInputFilePath('')),
       cleanDir(getOutputFilePath('')),
     ]);
+    console.log('Directories cleaned.');
   }
 
   async loadSchema() {
