@@ -10,6 +10,10 @@ export default class SchemaProcessor {
   }
 
   async cleanDirs() {
+    if (!this.config.freshStart) {
+      console.log('Skipping clean directories...');
+      return;
+    }
     console.log('Cleaning directories...');
 
     if (!this.config?.getInputFilePath || !this.config?.getOutputFilePath) {
@@ -29,10 +33,9 @@ export default class SchemaProcessor {
 
   async loadSchema() {
     try {
-      const { MERGED_FILE_PATH } = this.config.types;
-
-      const { checkFileExists, readFile, createFile } = this.files;
       const { schemas } = this.config;
+      const { MERGED_FILE_PATH } = this.config.types;
+      const { checkFileExists, readFile, createFile } = this.files;
 
       if (await checkFileExists(MERGED_FILE_PATH)) {
         this.schema = JSON.parse(await readFile(MERGED_FILE_PATH));
@@ -43,19 +46,33 @@ export default class SchemaProcessor {
         'Merged file does not exist. Processing individual schemas...'
       );
 
-      await Promise.all(
+      /**
+       * Loads the schema contents by downloading and parsing the individual schema files.
+       * This method is responsible for fetching the schema files, either from the file system
+       * or by downloading them if they don't exist locally.
+       *
+       * @returns {Promise<{ classes: any[], properties: any[] }>} The merged schema contents.
+       */
+      const schemaContents = await Promise.all(
         schemas.map(async schema => {
-          if (!(await checkFileExists(schema.path))) {
+          const { name } = schema;
+          const { getInputFilePath } = this.config;
+          const { GRAPHQL_EXTENSION } = this.config.extensions;
+          const schemaPath = getInputFilePath(`${name}${GRAPHQL_EXTENSION}`);
+
+          if (!(await checkFileExists(schemaPath))) {
             console.log(`Downloading schema file: ${schema.name}`);
             await downloadSchema(schema);
           }
+
+          return JSON.parse(await readFile(schemaPath));
         })
       );
 
-      const schemaContents = await Promise.all(
-        schemas.map(async schema => JSON.parse(await readFile(schema.path)))
-      );
-
+      /**
+       * Merges the individual schema contents into a single schema object.
+       * The merged schema contains the combined classes and properties from all the individual schemas.
+       */
       this.schema = {
         classes: schemaContents.flatMap(schema => schema.classes || []),
         properties: schemaContents.flatMap(schema => schema.properties || []),

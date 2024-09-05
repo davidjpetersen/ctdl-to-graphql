@@ -1,6 +1,6 @@
 import { config, files, http } from '../utils/index.js';
 
-const { regex, replacements } = config;
+const { regex, replacements, extensions, getInputFilePath } = config;
 const { checkFileExists, createFile } = files;
 const { getURL } = http;
 const { COLON_REGEX } = regex;
@@ -55,15 +55,12 @@ const addNameProperty = arr => {
 };
 
 const downloadSchema = async schema => {
-  const { name, url, path } = schema;
+  const { name, url } = schema;
+  const { GRAPHQL_EXTENSION } = extensions;
+  const filePath = getInputFilePath(`${name}${GRAPHQL_EXTENSION}`);
 
   const content = await http.getURL(url);
-  // const cleanedContent = renameKeys(content['@graph'], renameKeyTerms);
-  // const langFreeContent = stripLangStrings(cleanedContent);
-  // const namedContent = addNameProperty(langFreeContent);
-  // const jsonContent = JSON.stringify(namedContent, null, 2);
-
-  await files.createFile(path, JSON.stringify(content, null, 2));
+  await files.createFile(filePath, JSON.stringify(content, null, 2));
 };
 
 export default downloadSchema;

@@ -21,16 +21,15 @@ const getOutputFilePath = filename => {
 
 // Configuration object by stage
 const config = {
+  freshStart: false,
   schemas: [
     {
       name: 'ctdl',
       url: CTDL_MAPPING_URL,
-      path: getInputFilePath('ctdl.json'),
     },
     {
       name: 'asn',
       url: ASN_MAPPING_URL,
-      path: getInputFilePath('asn.json'),
     },
   ],
   extensions: {
@@ -40,7 +39,6 @@ const config = {
   regex: {
     COLON_REGEX: /:/g,
   },
-
   types: {
     CLASSES_FOLDER: getInputFilePath('/classes'),
     PROPERTIES_FOLDER: getInputFilePath('/properties'),
