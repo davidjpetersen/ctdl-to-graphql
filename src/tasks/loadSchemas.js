@@ -18,7 +18,7 @@ const loadSchemas = async (config, files, http) => {
       return JSON.parse(await readFile(MERGED_FILE_PATH));
     }
 
-    console.log('Merged file does not exist. Processing individual schemas...');
+    // console.log('Merged file does not exist. Processing individual schemas...');
 
     const schemaContents = await Promise.all(
       schemas.map(schema => http.getSchema(schema, config, files))
@@ -31,7 +31,7 @@ const loadSchemas = async (config, files, http) => {
 
     await createFile(MERGED_FILE_PATH, JSON.stringify(schema, null, 2));
 
-    console.log('Schema merged successfully.');
+    // console.log('Schema merged successfully.');
     return schema;
   } catch (error) {
     console.error('Error loading schema:', error.message);

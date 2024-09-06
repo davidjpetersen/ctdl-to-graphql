@@ -7,8 +7,6 @@ const cleanDirs = async (config, files) => {
     return;
   }
 
-  console.log('Cleaning directories...');
-
   if (
     typeof getInputFilePath !== 'function' ||
     typeof getOutputFilePath !== 'function'
@@ -22,8 +20,6 @@ const cleanDirs = async (config, files) => {
     cleanDir(getInputFilePath('')),
     cleanDir(getOutputFilePath('')),
   ]);
-
-  console.log('Directories cleaned.');
 };
 
 export default cleanDirs;

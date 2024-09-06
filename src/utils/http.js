@@ -36,10 +36,10 @@ const getSchema = async (
     return JSON.parse(schemaContent);
   }
 
-  console.log(`Downloading schema file: ${name}`);
+  // console.log(`Downloading schema file: ${name}`);
   const content = await getURL(url);
   await createFile(schemaPath, JSON.stringify(content, null, 2));
-  console.log(`Schema file downloaded: ${name}`);
+  // console.log(`Schema file downloaded: ${name}`);
   return content;
 };
 
