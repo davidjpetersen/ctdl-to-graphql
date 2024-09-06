@@ -44,6 +44,7 @@ const config = {
     CLASSES_FOLDER: getInputFilePath('/classes'),
     PROPERTIES_FOLDER: getInputFilePath('/properties'),
     MERGED_FILE_PATH: getInputFilePath('merged.json'),
+    OUTPUT_FILE_PATH: getOutputFilePath('schema.graphql'),
   },
   properties: {
     ctdl: getInputFilePath('/ctdl/Props.json'),

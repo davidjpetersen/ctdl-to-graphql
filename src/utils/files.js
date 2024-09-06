@@ -1,5 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { Mutex } from 'async-mutex';
+
+const fileAccessMutex = new Mutex();
 
 // Delete the contents of the output folder and recreate it.
 const cleanDir = async folderPath => {
@@ -96,7 +99,22 @@ const getFolderFiles = async folderPath => {
   }
 };
 
+const appendToFile = async (filePath, data) => {
+  try {
+    await fileAccessMutex.runExclusive(async () => {
+      if (await checkFileExists(filePath)) {
+        return fs.promises.appendFile(filePath, data, 'utf8');
+      } else {
+        return createFile(filePath, data);
+      }
+    });
+  } catch (error) {
+    console.error(`Error appending to file ${filePath}:`, error);
+    throw error;
+  }
+};
 export default {
+  appendToFile,
   checkFileExists,
   cleanDir,
   createFile,
