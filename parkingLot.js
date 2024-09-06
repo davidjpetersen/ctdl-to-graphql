@@ -1,10 +1,3 @@
-import { config, files, http } from '../utils/index.js';
-
-const { regex, replacements, extensions, getInputFilePath } = config;
-const { checkFileExists, createFile } = files;
-const { getURL } = http;
-const { COLON_REGEX } = regex;
-
 function renameKeys(obj, renameFn) {
   if (Array.isArray(obj)) {
     return obj.map(item => renameKeys(item, renameFn));
@@ -53,14 +46,3 @@ const addNameProperty = arr => {
     fullName: obj.id.replace(':', '_'),
   }));
 };
-
-const downloadSchema = async schema => {
-  const { name, url } = schema;
-  const { GRAPHQL_EXTENSION } = extensions;
-  const filePath = getInputFilePath(`${name}${GRAPHQL_EXTENSION}`);
-
-  const content = await http.getURL(url);
-  await files.createFile(filePath, JSON.stringify(content, null, 2));
-};
-
-export default downloadSchema;

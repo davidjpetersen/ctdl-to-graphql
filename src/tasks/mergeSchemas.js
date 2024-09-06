@@ -32,4 +32,4 @@ async function mergeSchemas(schemas) {
   return mergedSchema;
 }
 
-export default mergeSchemas;
+export default { mergeSchemas };

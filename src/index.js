@@ -1,4 +1,4 @@
-import { config, files } from './utils/index.js';
+import { config, files, http } from './utils/index.js';
 
 import { Listr } from 'listr2';
 import SchemaProcessor from './SchemaProcessor.js';
@@ -10,7 +10,7 @@ import SchemaProcessor from './SchemaProcessor.js';
  * @param {Object} config - The configuration object containing settings for the application.
  * @param {Object} files - The object containing utilities for reading and writing files.
  */
-const schemaProcessor = new SchemaProcessor(config, files);
+const schemaProcessor = new SchemaProcessor(config, files, http);
 
 /**
  * Defines a queue of tasks to be executed by the Listr library.
@@ -27,7 +27,7 @@ const tasks = [
   },
   {
     title: 'Load schemas',
-    task: () => schemaProcessor.loadSchema(),
+    task: () => schemaProcessor.loadSchemas(),
   },
   {
     title: 'Process schemas',
