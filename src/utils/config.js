@@ -20,6 +20,8 @@ const getOutputFilePath = filename => {
   return path.join(OUTPUT_FOLDER_PATH, filename);
 };
 
+const getNameFromURI = uri => (uri ? uri.split(':')[1]?.trim() || '' : '');
+
 // Configuration object by stage
 const config = {
   freshStart: FRESH_START,
@@ -95,6 +97,7 @@ const config = {
   },
   getInputFilePath,
   getOutputFilePath,
+  getNameFromURI,
 };
 
 export default config;

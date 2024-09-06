@@ -1,6 +1,9 @@
 import cleanDirs from './tasks/cleanDirs.js';
 import loadSchemas from './tasks/loadSchemas.js';
-import createProperty from './tasks/createProperties.js';
+import processClasses from './tasks/process/processClasses.js';
+import validateSchema from './tasks/process/validateSchema.js';
+import getGraphQLSchema from './tasks/process/getGraphQLSchema.js';
+
 export default class SchemaProcessor {
   constructor(config, files, http) {
     this.config = config;
@@ -19,62 +22,20 @@ export default class SchemaProcessor {
   }
 
   async processSchemas() {
-    // Check if the merged file exists
-    const {
-      types: { MERGED_FILE_PATH, OUTPUT_FILE_PATH },
-    } = this.config;
+    const { config, files, schema } = this;
+    const { types, getOutputFilePath } = config;
+    const { MERGED_FILE_PATH } = types;
 
-    const mergedFileExists = await this.files.checkFileExists(MERGED_FILE_PATH);
+    // Validate the schema
+    await validateSchema(MERGED_FILE_PATH, files, schema);
 
-    if (!mergedFileExists) {
-      throw new Error('Merged file does not exist. Please rerun.');
-    }
+    // Process the schema
+    const processedSchema = await processClasses(schema, config, files);
 
-    if (
-      this.schema.classes?.length === 0 ||
-      this.schema.properties?.length === 0
-    ) {
-      throw new Error('Schema is empty.');
-    }
+    const graphQLClasses = getGraphQLSchema(processedSchema, config, files);
+    // Write the schema to a file
+    // const schemaPath = getOutputFilePath('schema.graphql');
 
-    console.log('Processing schemas...', this.schema.classes.length);
-
-    const processedSchema = await Promise.all(
-      this.schema.classes.map(async classItem => {
-        const { uri, label, description, comment, optional, required } =
-          classItem;
-
-        let fieldsObject = await Promise.all(
-          [...optional, ...required].map(async field => {
-            const termName = field.split(':')[1];
-            const propertyConfig = this.schema.properties.find(
-              prop => prop.uri === field
-            );
-
-            const property = await createProperty(
-              propertyConfig,
-              this.config,
-              this.files
-            );
-            return [termName, property];
-          })
-        );
-
-        fieldsObject = Object.fromEntries(fieldsObject);
-
-        return {
-          name: uri.split(':')[1],
-          label: label?.['en-US'] || null,
-          description: description?.['en-US'] || null,
-          comment: comment?.['en-US'] || null,
-          fields: fieldsObject,
-        };
-      })
-    );
-
-    await this.files.createFile(
-      OUTPUT_FILE_PATH,
-      JSON.stringify(processedSchema, null, 2)
-    );
+    // await files.createFile(schemaPath, JSON.stringify(graphQLClasses));
   }
 }
