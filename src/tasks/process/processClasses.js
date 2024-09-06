@@ -1,14 +1,8 @@
-import createProperty from '../createProperties.js';
+import getFieldsAsTypes from '../getFieldsAsTypes.js';
+import { GraphQLObjectType, printType } from 'graphql';
+import { config, files } from '../../utils/index.js';
 
-/**
- * Processes the classes defined in the provided schema, creating GraphQL type definitions for each class.
- *
- * @param {object} schema - The schema object containing the class and property definitions.
- * @param {object} config - The configuration object containing utility functions.
- * @param {object[]} files - An array of file objects containing additional data.
- * @returns {Promise<object[]>} - An array of GraphQL type definitions for the processed classes.
- */
-const processClasses = async (schema, config, files) => {
+const processClasses = async schema => {
   const { classes, properties } = schema;
   const { getNameFromURI } = config;
 
@@ -17,22 +11,35 @@ const processClasses = async (schema, config, files) => {
       const { uri, label, description, comment, optional, required } =
         classItem;
 
-      const fields = await Promise.all(
-        [...optional, ...required].map(async field => {
-          const termName = getNameFromURI(field);
-          const propertyConfig = properties.find(prop => prop.uri === field);
-          const property = await createProperty(propertyConfig, config, files);
-          return [termName, property];
-        })
+      // console.log('Processing class:', getNameFromURI(uri));
+
+      // An array of the uris of all properties for this type
+      const fields = [...optional, ...required];
+
+      // Fields = array of uris of all properties in this type.
+      // Properties = array of objects containing all properties in the schema.
+      const fieldsAsTypes = await getFieldsAsTypes(
+        fields,
+        properties,
+        config,
+        files
       );
 
-      return {
+      const annotation = [
+        label?.['en-US'],
+        description?.['en-US'],
+        comment?.['en-US'],
+      ]
+        .filter(Boolean)
+        .join(' - ');
+
+      const graphQLType = new GraphQLObjectType({
         name: getNameFromURI(uri),
-        label: label?.['en-US'] ?? null,
-        description: description?.['en-US'] ?? null,
-        comment: comment?.['en-US'] ?? null,
-        fields: Object.fromEntries(fields),
-      };
+        description: annotation,
+        fields: fieldsAsTypes,
+      });
+
+      return printType(graphQLType).concat('\n\n\n');
     })
   );
 };

@@ -30,12 +30,13 @@ export default class SchemaProcessor {
     await validateSchema(MERGED_FILE_PATH, files, schema);
 
     // Process the schema
-    const processedSchema = await processClasses(schema, config, files);
+    const processedClasses = await processClasses(schema, config, files);
 
-    const graphQLClasses = getGraphQLSchema(processedSchema, config, files);
-    // Write the schema to a file
-    // const schemaPath = getOutputFilePath('schema.graphql');
+    // Extract graphql classes from the schema
+    // const graphQLClasses = getGraphQLSchema(processedSchema, config, files);
+    // Write the graphql schema to a file
+    const schemaPath = getOutputFilePath('classes.graphql');
 
-    // await files.createFile(schemaPath, JSON.stringify(graphQLClasses));
+    await files.createFile(schemaPath, processedClasses);
   }
 }
