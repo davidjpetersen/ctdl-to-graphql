@@ -1,7 +1,10 @@
 /**
  * Loads the schema by first checking if a merged schema file exists, and if not, processing the individual schemas and merging them.
  *
- * @returns {Promise<void>} - A promise that resolves when the schema has been loaded.
+ * @param {Object} config - Configuration object
+ * @param {Object} files - File operations object
+ * @param {Object} http - HTTP operations object
+ * @returns {Promise<Object>} - A promise that resolves to the loaded schema
  */
 const loadSchemas = async (config, files, http) => {
   const {
@@ -22,14 +25,13 @@ const loadSchemas = async (config, files, http) => {
     );
 
     const schema = {
-      classes: schemaContents.flatMap(schema => schema.classes ?? []),
-      properties: schemaContents.flatMap(schema => schema.properties ?? []),
+      classes: schemaContents.flatMap(schema => schema.classes || []),
+      properties: schemaContents.flatMap(schema => schema.properties || []),
     };
 
     await createFile(MERGED_FILE_PATH, JSON.stringify(schema, null, 2));
 
     console.log('Schema merged successfully.');
-
     return schema;
   } catch (error) {
     console.error('Error loading schema:', error.message);
