@@ -1,6 +1,7 @@
-import getFieldsAsTypes from '../getFieldsAsTypes.js';
 import { GraphQLObjectType, printType } from 'graphql';
 import { config, files } from '../../utils/index.js';
+
+import getFieldsAsTypes from '../getFieldsAsTypes.js';
 
 const processClasses = async schema => {
   const { classes, properties } = schema;
@@ -27,15 +28,15 @@ const processClasses = async schema => {
 
       const annotation = [
         label?.['en-US'],
-        description?.['en-US'],
-        comment?.['en-US'],
+        // description?.['en-US'],
+        // comment?.['en-US'],
       ]
         .filter(Boolean)
         .join(' - ');
 
       const graphQLType = new GraphQLObjectType({
         name: getNameFromURI(uri),
-        description: annotation,
+        // description: annotation,
         fields: fieldsAsTypes,
       });
 

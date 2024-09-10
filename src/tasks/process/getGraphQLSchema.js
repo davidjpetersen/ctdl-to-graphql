@@ -12,11 +12,11 @@ const getGraphQLSchema = async (jsonSchema, config, files) => {
         const { label, description, type, comment } = field;
         acc[fieldName] = {
           type,
-          description: description?.['en-US'] || null,
+          // description: description?.['en-US'] || null,
           resolve: () => ({
             name: getNameFromURI(fieldName),
             label: label?.['en-US'] || null,
-            description: description?.['en-US'] || null,
+            // description: description?.['en-US'] || null,
             comment: comment?.['en-US'] || null,
           }),
         };
@@ -27,7 +27,7 @@ const getGraphQLSchema = async (jsonSchema, config, files) => {
 
     const classType = new GraphQLObjectType({
       name,
-      description,
+      // description,
       fields: typeFields,
     });
 

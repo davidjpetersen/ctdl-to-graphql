@@ -1,13 +1,7 @@
-import {
-  GraphQLUnionType,
-  GraphQLObjectType,
-  GraphQLString,
-  printType,
-} from 'graphql';
-
+import { GraphQLObjectType, GraphQLUnionType, printType } from 'graphql';
 import { config, files } from '../utils/index.js';
 
-const { getOutputFilePath, getNameFromURI } = config;
+const { getOutputFilePath, getNameFromURI, mappings } = config;
 
 const getFieldsAsTypes = async (fields, properties) => {
   const fieldTypes = {};
@@ -20,31 +14,46 @@ const getFieldsAsTypes = async (fields, properties) => {
       }
 
       const fieldName = getNameFromURI(field);
-      const optionCount = property.valueTypes?.length ?? 0;
 
-      fieldTypes[fieldName] =
-        optionCount === 0
-          ? GraphQLString
-          : optionCount === 1
-            ? createObjectProperty(property)
-            : createUnionProperty(property);
+      const optionCount = property?.valuetype?.length ?? 0;
+
+      switch (optionCount) {
+        case 0:
+          // console.log('Creating String property:', fieldName);
+          fieldTypes[fieldName] = { name: fieldName, type: String };
+          break;
+        case 1:
+          // console.log('Creating Object property:', fieldName);
+
+          fieldTypes[fieldName] = {
+            name: fieldName,
+            type: await createObjectProperty(property),
+          };
+          break;
+        default:
+          // console.log('Creating Union property:', fieldName);
+          fieldTypes[fieldName] = {
+            name: fieldName,
+            type: await createUnionProperty(property),
+          };
+
+          break;
+      }
     })
   );
 
   return fieldTypes;
 };
 
-const createObjectProperty = ({ uri, description, fields }) => {
+const createObjectProperty = ({ uri, description, valuetype }) => {
+  const propType = valuetype[0];
+  const typeName = getNameFromURI(uri);
+  const typeDescription = description?.['en-US'] ?? null;
+  const typeValue = mappings[propType] || getNameFromURI(propType);
+
   return new GraphQLObjectType({
-    name: getNameFromURI(uri),
-    description: description?.['en-US'] ?? null,
-    fields: () =>
-      Object.fromEntries(
-        fields.map(([fieldName, { type, description }]) => [
-          fieldName,
-          { type, description },
-        ])
-      ),
+    name: typeValue,
+    // description: typeDescription,
   });
 };
 const createUnionProperty = async ({ uri, description, valuetype }) => {
@@ -55,23 +64,18 @@ const createUnionProperty = async ({ uri, description, valuetype }) => {
     type =>
       new GraphQLObjectType({
         name: getNameFromURI(type),
-        fields: {},
       })
   );
 
+  const unionPath = getOutputFilePath('unionType.graphql');
   const unionType = new GraphQLUnionType({
     name,
-    description: descriptionText,
+    // description: descriptionText,
     types,
   });
 
-  const unionPath = getOutputFilePath('unionType.graphql');
-  fieldTypes[fieldName] = unionType;
-  await files.appendToFile(
-    unionPath,
-    `${printType(fieldTypes[fieldName])}\n\n\n`
-  );
-  return fieldTypes[fieldName];
-};
+  await files.appendToFile(unionPath, `${printType(unionType)}\n`);
 
+  return unionType;
+};
 export default getFieldsAsTypes;

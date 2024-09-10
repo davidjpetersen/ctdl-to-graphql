@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLUnionType } from 'graphql';
+import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
 
 import { config } from './index.js';
 
@@ -14,7 +14,7 @@ const getPropertyFromSchema = (propertyID, schema) => {
 
 const getPropertyType = (propertyName, acceptedValues) => {
   if (!acceptedValues || acceptedValues.length === 0) {
-    return GraphQLString;
+    return String;
   }
 
   if (acceptedValues.length === 1) {
@@ -58,12 +58,12 @@ const getGraphQLProperties = (classFields, schema) => {
           fullName,
           {
             type: getPropertyType(fullName, fields),
-            description: getPropertyDescription(
-              fullName,
-              id,
-              description,
-              comment
-            ),
+            // description: getPropertyDescription(
+            //   fullName,
+            //   id,
+            //   description,
+            //   comment
+            // ),
           },
         ];
       })
@@ -83,7 +83,7 @@ const getGraphQLType = (
 
   const graphQLTypeConfig = {
     name: className,
-    description: `${className} - ${classDescription}`,
+    // description: `${className} - ${classDescription}`,
     fields: graphqlFields,
   };
 

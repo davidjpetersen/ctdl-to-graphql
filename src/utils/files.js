@@ -1,6 +1,6 @@
+import { Mutex } from 'async-mutex';
 import fs from 'fs';
 import path from 'path';
-import { Mutex } from 'async-mutex';
 
 const fileAccessMutex = new Mutex();
 
@@ -113,6 +113,7 @@ const appendToFile = async (filePath, data) => {
     throw error;
   }
 };
+
 export default {
   appendToFile,
   checkFileExists,

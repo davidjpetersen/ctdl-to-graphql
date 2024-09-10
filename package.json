@@ -1,25 +1,30 @@
 {
-	"name": "ctdl-to-graphql",
-	"version": "1.0.0",
-	"main": "index.js",
-	"scripts": {
-		"build": "node src/index.js"
-	},
-	"author": "David Petersen",
-	"license": "ISC",
-	"description": "",
-	"devDependencies": {
-		"csv-parser": "^3.0.0",
-		"dotenv": "^16.4.5",
-		"graphql": "^16.9.0",
-		"listr2": "^8.2.4",
-		"n3": "^1.21.0",
-		"node-fetch": "^3.3.2",
-		"prettier": "^3.3.3"
-	},
-	"type": "module",
-	"dependencies": {
-		"async-mutex": "^0.5.0",
-		"jsonld": "^8.3.2"
-	}
+  "name": "ctdl-to-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "node src/index.js"
+  },
+  "author": "David Petersen",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "@graphql-eslint/eslint-plugin": "^3.20.1",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0",
+    "graphql": "^16.9.0",
+    "graphql-eslint-monorepo": "github:dimaMachina/graphql-eslint",
+    "listr2": "^8.2.4",
+    "n3": "^1.21.0",
+    "node-fetch": "^3.3.2",
+    "prettier": "^3.3.3"
+  },
+  "type": "module",
+  "dependencies": {
+    "async-mutex": "^0.5.0",
+    "jsonld": "^8.3.2"
+  }
 }

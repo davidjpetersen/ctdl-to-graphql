@@ -1,8 +1,8 @@
 import cleanDirs from './tasks/cleanDirs.js';
+import getGraphQLSchema from './tasks/process/getGraphQLSchema.js';
 import loadSchemas from './tasks/loadSchemas.js';
 import processClasses from './tasks/process/processClasses.js';
 import validateSchema from './tasks/process/validateSchema.js';
-import getGraphQLSchema from './tasks/process/getGraphQLSchema.js';
 
 export default class SchemaProcessor {
   constructor(config, files, http) {
