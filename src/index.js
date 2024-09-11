@@ -16,7 +16,7 @@ const tasks = new Listr(
   [
     {
       title: 'Fetching CTDL Data',
-      task: async (ctx, task) => {
+      task: async (ctx) => {
         // Fetch and write each raw schema in the config.schema object
 
         const ctdlData = await Promise.all(
@@ -34,7 +34,7 @@ const tasks = new Listr(
     },
     {
       title: 'Parsing CTDL Schema',
-      task: async (ctx, task) => {
+      task: async (ctx) => {
         ctx.parsedSchema = await parseCtdl(ctx.ctdlData);
         const schemaToWrite = JSON.stringify(ctx.parsedSchema, null, 2);
         const filePath = config.getInputFilePath('parsedSchema.json');
