@@ -1,9 +1,9 @@
 import { GraphQLObjectType, printType } from 'graphql';
-import { config, files } from '../../utils/index.js';
+import { config, files } from '../utils/index.js';
 
-import getFieldsAsTypes from '../getFieldsAsTypes.js';
+import mapToGraphql from '../tasks/mapToGraphql.js';
 
-const processClasses = async schema => {
+const classProcessor = async schema => {
   const { classes, properties } = schema;
   const { getNameFromURI } = config;
 
@@ -15,11 +15,11 @@ const processClasses = async schema => {
       // console.log('Processing class:', getNameFromURI(uri));
 
       // An array of the uris of all properties for this type
-      const fields = [...optional, ...required];
+      // const fields = [...optional, ...required];
 
       // Fields = array of uris of all properties in this type.
       // Properties = array of objects containing all properties in the schema.
-      const fieldsAsTypes = await getFieldsAsTypes(
+      const fieldsAsTypes = await mapToGraphql(
         fields,
         properties,
         config,
@@ -45,4 +45,4 @@ const processClasses = async schema => {
   );
 };
 
-export default processClasses;
+export default classProcessor;

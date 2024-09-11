@@ -1,4 +1,4 @@
-export { default as cleanDirs } from './cleanDirs.js';
-export { default as combineSchemas } from './combineSchemas.js';
-export { default as createSchema } from './createSchema.js';
-export { default as mergeSchemas } from './mergeSchemas.js';
+export { default as fetchSchema } from './fetchSchema.js';
+export { default as generateSchema } from './generateSchema.js';
+export { default as mapToGraphql } from './mapToGraphql.js';
+export { default as parseCtdl } from './parseCtdl.js';

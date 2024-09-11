@@ -3,7 +3,7 @@ import { config, files } from '../utils/index.js';
 
 const { getOutputFilePath, getNameFromURI, mappings } = config;
 
-const getFieldsAsTypes = async (fields, properties) => {
+const mapToGraphql = async (fields, properties) => {
   const fieldTypes = {};
 
   await Promise.all(
@@ -27,7 +27,7 @@ const getFieldsAsTypes = async (fields, properties) => {
 
           fieldTypes[fieldName] = {
             name: fieldName,
-            type: await createObjectProperty(property),
+            type: createObjectProperty(property),
           };
           break;
         default:
@@ -78,4 +78,4 @@ const createUnionProperty = async ({ uri, description, valuetype }) => {
 
   return unionType;
 };
-export default getFieldsAsTypes;
+export default mapToGraphql;

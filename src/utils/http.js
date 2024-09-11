@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
  * @returns {Promise<Object>} - The parsed JSON response.
  * @throws {Error} - If the HTTP response is not successful.
  */
-const getURL = async url => {
+const fetchJSON = async url => {
   const response = await fetch(url);
   if (!response.ok) {
     const errorMessage = `HTTP error! status: ${response.status} for URL: ${url}. Response: ${await response.text()}`;
@@ -36,11 +36,9 @@ const getSchema = async (
     return JSON.parse(schemaContent);
   }
 
-  // console.log(`Downloading schema file: ${name}`);
-  const content = await getURL(url);
-  await createFile(schemaPath, JSON.stringify(content, null, 2));
-  // console.log(`Schema file downloaded: ${name}`);
+  const content = await fetchJSON(url);
+  await createFile(schemaPath, JSON.stringify(content['@graph'], null, 2));
   return content;
 };
 
-export default { getURL, getSchema };
+export default { fetchJSON, getSchema };

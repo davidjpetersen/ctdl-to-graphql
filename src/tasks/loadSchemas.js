@@ -19,14 +19,20 @@ const loadSchemas = async (config, files, http) => {
     }
 
     const schemaContents = await Promise.all(
-      schemas.map(schema => http.getSchema(schema, config, files))
+      schemas.map(async schema => {
+        const fullSchema = await http.getSchema(schema, config, files);
+        return fullSchema['@graph'];
+      })
     );
-
+    console.log('Schema contents:', schemaContents);
     const schema = {
-      classes: schemaContents.flatMap(schema => schema.classes ?? []),
-      properties: schemaContents.flatMap(schema => schema.properties ?? []),
+      classes: schemaContents.flatMap(schemaContent =>
+        schemaContent.filter(item => item['@type'] === 'rdfs:Class')
+      ),
+      properties: schemaContents.flatMap(schemaContent =>
+        schemaContent.filter(item => item['@type'] === 'rdf:Property')
+      ),
     };
-
     await createFile(MERGED_FILE_PATH, JSON.stringify(schema, null, 2));
 
     return schema;

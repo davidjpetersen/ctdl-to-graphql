@@ -5,21 +5,18 @@ dotenv.config();
 const vars = process.env;
 const {
   FRESH_START,
-  ASN_MAPPING_URL,
-  CTDL_MAPPING_URL,
+  // ASN_MAPPING_URL,
+  // CTDL_MAPPING_URL,
+  CTDL_SCHEMA_URL,
+  ASN_SCHEMA_URL,
   INPUT_FOLDER_PATH,
   OUTPUT_FILE_PATH,
   OUTPUT_FOLDER_PATH,
 } = vars;
 
-const getInputFilePath = filename => {
-  return path.join(INPUT_FOLDER_PATH, filename);
-};
-
-const getOutputFilePath = filename => {
-  return path.join(OUTPUT_FOLDER_PATH, filename);
-};
-
+const getFilePath = (folderPath, filename) => path.join(folderPath, filename);
+const getInputFilePath = filePath => getFilePath(INPUT_FOLDER_PATH, filePath);
+const getOutputFilePath = filePath => getFilePath(OUTPUT_FOLDER_PATH, filePath);
 const getNameFromURI = uri => (uri ? uri.split(':')[1]?.trim() || '' : '');
 
 // Configuration object by stage
@@ -28,11 +25,13 @@ const config = {
   schemas: [
     {
       name: 'ctdl',
-      url: CTDL_MAPPING_URL,
+      url: CTDL_SCHEMA_URL,
+      // url: CTDL_MAPPING_URL,
     },
     {
       name: 'asn',
-      url: ASN_MAPPING_URL,
+      url: ASN_SCHEMA_URL,
+      // url: ASN_MAPPING_URL,
     },
   ],
   extensions: {

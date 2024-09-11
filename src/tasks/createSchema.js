@@ -1,5 +1,5 @@
 import { files } from '../utils/index.js';
-import processClass from './process/processClass.js';
+import processClass from '../processors/processClass.js';
 const { readFile } = files;
 /**
  * Asynchronously creates a schema by reading and parsing schema data from multiple files.
@@ -9,10 +9,10 @@ const { readFile } = files;
  * @param {Object} schemas - An object of schema names and their corresponding file paths.
  * @returns {Promise<void>} - A Promise that resolves when the schema creation process is complete.
  */
-const createSchema = async filePath => {
+const loadSchemaAndProcess = async filePath => {
   try {
     const schema = JSON.parse(await readFile(filePath));
-    const { classes, properties } = schema;
+    const { classes } = schema;
 
     classes.forEach(item => processClass(item, schema));
   } catch (error) {

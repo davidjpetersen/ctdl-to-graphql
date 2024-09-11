@@ -1,46 +1,74 @@
-import { config, files, http } from './utils/index.js';
+import { config, http, schemaUtils } from './utils/index.js';
+import {
+  fetchSchema,
+  generateSchema,
+  mapToGraphql,
+  parseCtdl,
+} from './tasks/index.js';
 
 import { Listr } from 'listr2';
-import SchemaProcessor from './SchemaProcessor.js';
+import { files } from './utils/index.js';
 
-/**
- * Initializes a new instance of the `SchemaProcessor` class with the provided `config` and `files` objects.
- * The `SchemaProcessor` class is responsible for processing and managing GraphQL schemas.
- *
- * @param {Object} config - The configuration object containing settings for the application.
- * @param {Object} files - The object containing utilities for reading and writing files.
- */
-const schemaProcessor = new SchemaProcessor(config, files, http);
+const { schemas, getInputFilePath } = config;
+const { createFile } = files;
 
-/**
- * Defines a queue of tasks to be executed by the Listr library.
- *
- * The first task is "Clean directories", which calls the `cleanDirs()` method of the `schemaProcessor` object.
- * The second task is "Load schemas", which calls the `loadSchema()` method of the `schemaProcessor` object.
- *
- * These tasks are executed in the order they are defined when the `listr.run()` method is called.
- */
-const tasks = [
+const tasks = new Listr(
+  [
+    {
+      title: 'Fetching CTDL Data',
+      task: async (ctx, task) => {
+        // Fetch and write each raw schema in the config.schema object
+
+        const ctdlData = await Promise.all(
+          schemas.map(async ({ name, url }) => {
+            const rawSchema = await fetchSchema(url);
+            const schemaToWrite = JSON.stringify(rawSchema, null, 2);
+            const filePath = getInputFilePath(`raw/${name}.json`);
+            await createFile(filePath, schemaToWrite);
+            return { name, schema: rawSchema };
+          })
+        );
+
+        ctx.ctdlData = ctdlData;
+      },
+    },
+    {
+      title: 'Parsing CTDL Schema',
+      task: async (ctx, task) => {
+        ctx.parsedSchema = await parseCtdl(ctx.ctdlData);
+        const schemaToWrite = JSON.stringify(ctx.parsedSchema, null, 2);
+        const filePath = config.getInputFilePath('parsedSchema.json');
+        await createFile(filePath, schemaToWrite);
+      },
+    },
+    // {
+    //   title: 'Mapping to GraphQL',
+    //   task: async (ctx, task) => {
+    //     ctx.graphqlSchema = mapToGraphql(ctx.parsedSchema, schemaUtils);
+    //   },
+    // },
+    // {
+    //   title: 'Generating GraphQL Schema File',
+    //   task: async (ctx, task) => {
+    //     await generateSchema(ctx.graphqlSchema, config);
+    //   },
+    // },
+  ],
+  // Optional Listr configuration
   {
-    title: 'Clean directories',
-    task: () => schemaProcessor.cleanDirs(),
-  },
-  {
-    title: 'Load schemas',
-    task: () => schemaProcessor.loadSchemas(),
-  },
-  {
-    title: 'Process schemas',
-    task: () => schemaProcessor.processSchemas(),
-  },
-];
+    concurrent: false, // Run tasks sequentially
+    exitOnError: true, // Stop on the first error
+  }
+);
 
-/**
- * Initializes a new Listr instance with the defined queue of tasks to be executed.
- */
-const listr = new Listr(tasks);
+async function main() {
+  try {
+    await tasks.run();
+    console.log('CTDL to GraphQL conversion complete!');
+  } catch (error) {
+    console.error('An error occurred:', error);
+    process.exit(1);
+  }
+}
 
-/**
- * Executes the queue of tasks defined in the `queue` array using the Listr library.
- */
-await listr.run();
+main();
