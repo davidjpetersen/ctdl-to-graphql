@@ -1,61 +1,30 @@
-import { config, http, schemaUtils } from './utils/index.js';
 import {
-  fetchSchema,
-  generateSchema,
-  mapToGraphql,
-  parseSchema,
+  fetchAndStoreSchemas,
+  mapSchemaToGraphql,
+  mergeObjects,
+  parseSchemas,
 } from './tasks/index.js';
 
 import { Listr } from 'listr2';
-import { files } from './utils/index.js';
-
-const { schemas, getInputFilePath } = config;
-const { createFile } = files;
 
 const tasks = new Listr(
   [
     {
-      title: 'Fetching CTDL Data',
-      task: async ctx => {
-        // Fetch and write each raw schema in the config.schema object
-
-        const allSchemas = await Promise.all(
-          schemas.map(async ({ name, url }) => {
-            const rawSchema = await fetchSchema(url);
-            const schemaToWrite = JSON.stringify(rawSchema, null, 2);
-            const filePath = getInputFilePath(`raw/${name}.json`);
-            await createFile(filePath, schemaToWrite);
-            return { name, schema: rawSchema };
-          })
-        );
-
-        ctx.allSchemas = allSchemas;
-      },
+      title: 'Fetch and store CTDL data',
+      task: async ctx => fetchAndStoreSchemas(ctx),
     },
     {
       title: 'Parsing CTDL Schema',
-      task: async ctx => {
-        const allSchemas = ctx.allSchemas;
-        const parsedSchema = {};
-
-        for (const schemaItem of allSchemas) {
-          const { name, schema } = schemaItem;
-          parsedSchema[name] = await parseSchema(schema);
-        }
-
-        ctx.parsedSchema = parsedSchema;
-
-        const schemaToWrite = JSON.stringify(ctx.parsedSchema, null, 2);
-        const filePath = config.getInputFilePath('parsedSchema.json');
-        await createFile(filePath, schemaToWrite);
-      },
+      task: async ctx => parseSchemas(ctx),
     },
-    // {
-    //   title: 'Mapping to GraphQL',
-    //   task: async (ctx, task) => {
-    //     ctx.graphqlSchema = mapToGraphql(ctx.parsedSchema, schemaUtils);
-    //   },
-    // },
+    {
+      title: 'Merge Schemas',
+      task: async ctx => mergeObjects(ctx),
+    },
+    {
+      title: 'Mapping to GraphQL',
+      task: async ctx => mapSchemaToGraphql(ctx),
+    },
     // {
     //   title: 'Generating GraphQL Schema File',
     //   task: async (ctx, task) => {
@@ -63,7 +32,6 @@ const tasks = new Listr(
     //   },
     // },
   ],
-  // Optional Listr configuration
   {
     concurrent: false, // Run tasks sequentially
     exitOnError: true, // Stop on the first error

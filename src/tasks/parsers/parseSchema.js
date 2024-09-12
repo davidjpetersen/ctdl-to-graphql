@@ -3,8 +3,7 @@ import {
   parseConcept,
   parseConceptScheme,
   parseProperty,
-} from './parsers/index.js';
-// Take either asn or ctdl and categorize each object.
+} from './index.js';
 
 const parsedSchema = {
   classes: {

@@ -1,4 +1,5 @@
-export { default as fetchSchema } from './fetchSchema.js';
-export { default as generateSchema } from './generateSchema.js';
-export { default as mapToGraphql } from './mapToGraphql.js';
-export { default as parseSchema } from './parseSchema.js';
+export { default as mapSchemaToGraphql } from './mappers/mapSchemaToGraphql.js';
+export { default as parseSchema } from './parsers/parseSchema.js';
+export { default as parseSchemas } from './parsers/parseSchemas.js';
+export { default as fetchAndStoreSchemas } from './fetch/fetchAndStoreSchemas.js';
+export { default as mergeObjects } from './mergeObjects.js';

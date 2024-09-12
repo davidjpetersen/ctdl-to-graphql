@@ -39,6 +39,9 @@ const parseProperty = (parsedSchema, item) => {
   };
 
   if (options.length === 0) {
+    console.log('No options found for property:', name);
+  }
+  if (options.length === 1) {
     parsedSchema.properties.objectProperties.push(processedProp);
   }
   if (options.length > 0) {
