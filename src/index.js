@@ -3,7 +3,7 @@ import {
   fetchSchema,
   generateSchema,
   mapToGraphql,
-  parseCtdl,
+  parseSchema,
 } from './tasks/index.js';
 
 import { Listr } from 'listr2';
@@ -16,10 +16,10 @@ const tasks = new Listr(
   [
     {
       title: 'Fetching CTDL Data',
-      task: async (ctx) => {
+      task: async ctx => {
         // Fetch and write each raw schema in the config.schema object
 
-        const ctdlData = await Promise.all(
+        const allSchemas = await Promise.all(
           schemas.map(async ({ name, url }) => {
             const rawSchema = await fetchSchema(url);
             const schemaToWrite = JSON.stringify(rawSchema, null, 2);
@@ -29,13 +29,22 @@ const tasks = new Listr(
           })
         );
 
-        ctx.ctdlData = ctdlData;
+        ctx.allSchemas = allSchemas;
       },
     },
     {
       title: 'Parsing CTDL Schema',
-      task: async (ctx) => {
-        ctx.parsedSchema = await parseCtdl(ctx.ctdlData);
+      task: async ctx => {
+        const allSchemas = ctx.allSchemas;
+        const parsedSchema = {};
+
+        for (const schemaItem of allSchemas) {
+          const { name, schema } = schemaItem;
+          parsedSchema[name] = await parseSchema(schema);
+        }
+
+        ctx.parsedSchema = parsedSchema;
+
         const schemaToWrite = JSON.stringify(ctx.parsedSchema, null, 2);
         const filePath = config.getInputFilePath('parsedSchema.json');
         await createFile(filePath, schemaToWrite);

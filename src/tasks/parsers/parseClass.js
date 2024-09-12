@@ -1,4 +1,4 @@
-import { config } from '../utils/index.js';
+import { config } from '../../utils/index.js';
 const { getNameFromURI } = config;
 
 const parseClass = (parsedSchema, item) => {
@@ -34,7 +34,11 @@ const parseClass = (parsedSchema, item) => {
     fields,
   };
 
-  parsedSchema.classes.push(processedItem);
+  if (subClassOf.length > 0) {
+    parsedSchema.classes.childClasses.push(processedItem);
+  } else {
+    parsedSchema.classes.parentClasses.push(processedItem);
+  }
 };
 
 export default parseClass;
