@@ -44,7 +44,7 @@ const parseProperty = (parsedSchema, item) => {
   if (options.length === 1) {
     parsedSchema.properties.objectProperties.push(processedProp);
   }
-  if (options.length > 0) {
+  if (options.length > 1) {
     parsedSchema.properties.unionProperties.push(processedProp);
   }
 };

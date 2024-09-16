@@ -1,37 +1,46 @@
-import globals from 'globals';
-import { processors as graphqlEslint } from '@graphql-eslint/eslint-plugin';
-import pluginImport from 'eslint-plugin-import';
-import pluginJs from '@eslint/js';
-import pluginPrettier from 'eslint-plugin-prettier';
+import * as graphqlESLintPlugin from '@graphql-eslint/eslint-plugin';
+
+import { fileURLToPath } from 'url';
+import path from 'path';
+import typescriptESLintPlugin from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
+
+// Get the current directory path in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default [
   {
-    languageOptions: { globals: { ...globals.browser, ...globals.es2021 } },
-  },
-  pluginJs.configs.recommended,
-  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
     plugins: {
-      '@graphql-eslint': graphqlEslint,
-      import: pluginImport,
-      prettier: pluginPrettier,
+      '@typescript-eslint': typescriptESLintPlugin,
     },
     rules: {
-      ...graphqlEslint.recommended.rules,
-      'import/order': [
-        'error',
-        { 'newlines-between': 'always', alphabetize: { order: 'asc' } },
-      ],
-      'prettier/prettier': 'error',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      ...typescriptESLintPlugin.configs.recommended.rules,
     },
   },
   {
-    files: ['**/*.ts', '**/*.tsx'],
-    extends: ['plugin:@typescript-eslint/recommended'],
-    parser: '@typescript-eslint/parser',
+    files: ['**/*.graphql'],
     plugins: {
-      '@typescript-eslint': pluginTypescript,
+      '@graphql-eslint': graphqlESLintPlugin,
+    },
+    rules: {
+      '@graphql-eslint/known-type-names': 'error',
+      '@graphql-eslint/unique-operation-name': 'error',
+      '@graphql-eslint/fields-on-correct-type': 'error',
+      // Add more GraphQL rules as needed
+    },
+    languageOptions: {
+      parserOptions: {
+        schema: path.resolve(__dirname, 'path/to/your/schema.graphql'), // Update to your schema path
+        operations: './src/**/*.graphql', // Glob pattern to match GraphQL operations
+      },
     },
   },
 ];

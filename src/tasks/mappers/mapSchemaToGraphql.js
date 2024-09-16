@@ -1,3 +1,4 @@
+import { GraphQLSchema, printSchema, printType } from 'graphql';
 import { config, files } from '../../utils/index.js';
 import {
   mapChildClasses,
@@ -12,8 +13,7 @@ const { getOutputFilePath } = config;
 const { createFile } = files;
 
 const mapSchemaToGraphql = async ctx => {
-  const { parsedSchema } = ctx;
-  const schema = parsedSchema;
+  const { parsedSchema: schema } = ctx;
 
   const {
     classes: { childClasses = [], parentClasses = [] },
@@ -22,44 +22,42 @@ const mapSchemaToGraphql = async ctx => {
     conceptSchemes = [],
   } = schema;
 
+  const outputPath = getOutputFilePath('schema.graphql');
+
+  const allProperties = [...objectProperties, ...unionProperties];
   console.log('==========================================');
   console.log('SCHEMA FOUND');
   console.log('==========================================');
-  console.log('Child classes:', childClasses?.length ?? 0);
-  console.log('Parent classes:', parentClasses?.length ?? 0);
-  console.log('Object properties:', objectProperties?.length ?? 0);
-  console.log('Union properties:', unionProperties?.length ?? 0);
-  console.log('Concepts:', concepts?.length ?? 0);
-  console.log('Concept schemes:', conceptSchemes?.length ?? 0);
+
+  // console.log('Child classes:', childClasses.length);
+  // console.log('Parent//// classes:', parentClasses.length);
+  // console.log('Object properties:', objectProperties.length);
+  console.log('Union properties:', unionProperties.length);
+  // console.log('Concepts:', concepts.length);
+  // console.log('Concept schemes:', conceptSchemes.length);
   console.log('==========================================');
 
-  const [
-    parentClassesResult,
-    childClassesResult,
-    objectPropertiesResult,
-    unionPropertiesResult,
-    conceptSchemesResult,
-    conceptsResult,
-  ] = await Promise.all([
-    mapParentClasses(parentClasses),
-    mapChildClasses(childClasses),
+  const mappingFunctions = [
+    // mapParentClasses(parentClasses, allProperties),
+    // mapChildClasses(childClasses, allProperties),
     mapObjectProperties(objectProperties),
     mapUnionProperties(unionProperties),
-    mapConceptSchemes(conceptSchemes),
-    mapConcepts(concepts),
-  ]);
+    // mapConceptSchemes(conceptSchemes),
+    // mapConcepts(concepts),
+  ];
 
-  const aggregatedResult = [
-    parentClassesResult,
-    childClassesResult,
-    objectPropertiesResult,
-    unionPropertiesResult,
-    conceptSchemesResult,
-    conceptsResult,
-  ].join('\n\n');
+  const results = await Promise.all(mappingFunctions);
+  const flattenedResults = results.flat().filter(Boolean);
 
-  ctx.schema = aggregatedResult;
-  await createFile(getOutputFilePath('schema.graphql'), aggregatedResult);
+  // Append individual type definitions
+
+  for (const typeObject of flattenedResults) {
+    console.log(typeObject);
+    const typeString = printType(typeObject) + '\n\n';
+
+    await files.appendToFile(outputPath, typeString);
+  }
+
   console.log('Mapping complete');
 };
 export default mapSchemaToGraphql;

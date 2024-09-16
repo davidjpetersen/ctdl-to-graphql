@@ -1,4 +1,5 @@
 import {
+  cleanDirs,
   fetchAndStoreSchemas,
   mapSchemaToGraphql,
   mergeObjects,
@@ -9,6 +10,10 @@ import { Listr } from 'listr2';
 
 const tasks = new Listr(
   [
+    {
+      title: 'Clean dirs',
+      task: cleanDirs,
+    },
     {
       title: 'Fetch and store CTDL data',
       task: async ctx => fetchAndStoreSchemas(ctx),
