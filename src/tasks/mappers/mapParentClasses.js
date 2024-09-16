@@ -52,7 +52,7 @@ const mapParentClasses = async (parentClasses, allProperties) => {
 
       return new GraphQLObjectType({
         name: className,
-        description: classDescription,
+        // description: classDescription,
 
         fields: graphqlFields,
       });

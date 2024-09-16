@@ -22,7 +22,7 @@ const mapObjectProperties = async objectProperties => {
       type: { type: GraphQLString },
       id: { type: GraphQLString },
       name: { type: GraphQLString },
-      annotation: { type: GraphQLString },
+      // annotation: { type: GraphQLString },
       extends: { type: GraphQLString },
       options: { type: GraphQLString },
       usedBy: {

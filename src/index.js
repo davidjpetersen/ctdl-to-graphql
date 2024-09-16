@@ -22,10 +22,10 @@ const tasks = new Listr(
       title: 'Parsing CTDL Schema',
       task: async ctx => parseSchemas(ctx),
     },
-    {
-      title: 'Merge Schemas',
-      task: async ctx => mergeObjects(ctx),
-    },
+    // {
+    //   title: 'Merge Schemas',
+    //   task: async ctx => mergeObjects(ctx),
+    // },
     {
       title: 'Mapping to GraphQL',
       task: async ctx => mapSchemaToGraphql(ctx),

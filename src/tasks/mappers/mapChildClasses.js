@@ -1,8 +1,8 @@
 import {
+  GraphQLInterfaceType,
   GraphQLObjectType,
   GraphQLString,
   GraphQLUnionType,
-  printType,
 } from 'graphql';
 
 import { config } from '../../utils/index.js';
@@ -14,13 +14,13 @@ const mapChildClasses = async (childClasses, allProperties) => {
   const graphqlTypeDefinitions = childClasses.map(childClass => {
     const {
       name: className,
-      annotation: classDescription,
+      // annotation: classDescription,
       fields: classFields,
-
-      extends: childClases,
+      extends: classParents,
     } = childClass;
 
     const graphqlFields = {};
+
     for (const fieldId of classFields) {
       const matchingProperty = allProperties
         ? allProperties.find(property => property['id'] === fieldId)
@@ -30,11 +30,13 @@ const mapChildClasses = async (childClasses, allProperties) => {
         const acceptedTypes = matchingProperty.options;
         const fieldName = matchingProperty.name;
 
+        // If there is only one accepted type, use that as the field type. This will be a relation field.
         if (acceptedTypes.length === 1) {
           graphqlFields[fieldName] = {
             type: mappings[acceptedTypes[0]] || 'String',
           };
         } else {
+          // If there are multiple accepted types, create a union type. This will be a union field.
           const fieldUnionTypes = acceptedTypes.map(
             type =>
               new GraphQLObjectType({
@@ -47,7 +49,6 @@ const mapChildClasses = async (childClasses, allProperties) => {
 
           const UnionType = new GraphQLUnionType({
             name: `${fieldName}Union`,
-
             types: fieldUnionTypes,
             resolveType(value) {
               return fieldUnionTypes.find(type =>
@@ -67,8 +68,10 @@ const mapChildClasses = async (childClasses, allProperties) => {
       }
     }
 
-    const interfaces = childClases.map(className => {
-      return className.split(':')[1];
+    const interfaces = classParents.map(className => {
+      return new GraphQLInterfaceType({
+        name: className.split(':')[1],
+      });
     });
 
     if (!className) {
@@ -77,9 +80,9 @@ const mapChildClasses = async (childClasses, allProperties) => {
 
     const graphqlType = new GraphQLObjectType({
       name: className,
-      description: classDescription,
+      // description: classDescription,
       fields: graphqlFields,
-      interfaces: interfaces,
+      interfaces,
     });
 
     return graphqlType;
