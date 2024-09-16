@@ -9,14 +9,15 @@ import { config } from '../../utils/index.js';
 
 const { mappings } = config;
 const unionTypes = [];
-const mapParentClasses = async (childClasses, allProperties) => {
+const mapChildClasses = async (childClasses, allProperties) => {
+  console.log('Mapping child classes');
   const graphqlTypeDefinitions = childClasses.map(childClass => {
     const {
       name: className,
       annotation: classDescription,
       fields: classFields,
 
-      extends: parentClases,
+      extends: childClases,
     } = childClass;
 
     const graphqlFields = {};
@@ -66,7 +67,7 @@ const mapParentClasses = async (childClasses, allProperties) => {
       }
     }
 
-    const interfaces = parentClases.map(className => {
+    const interfaces = childClases.map(className => {
       return className.split(':')[1];
     });
 
@@ -87,4 +88,4 @@ const mapParentClasses = async (childClasses, allProperties) => {
   return graphqlTypeDefinitions;
 };
 
-export default mapParentClasses;
+export default mapChildClasses;

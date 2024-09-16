@@ -1,5 +1,7 @@
 const mapConceptSchemes = async conceptSchemes => {
-  return true;
+  console.log('Mapping concept schemes');
+  //@TODO: Implement mapping logic
+  return;
 };
 
 export default mapConceptSchemes;

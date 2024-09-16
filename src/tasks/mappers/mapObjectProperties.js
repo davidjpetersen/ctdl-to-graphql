@@ -5,6 +5,7 @@ import { config } from '../../utils/index.js';
 const { getNameFromURI, mappings } = config;
 
 const mapObjectProperties = async objectProperties => {
+  console.log('Mapping object properties');
   return objectProperties.map(property => {
     const {
       type,

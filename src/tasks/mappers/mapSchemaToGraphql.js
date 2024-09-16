@@ -38,8 +38,8 @@ const mapSchemaToGraphql = async ctx => {
   console.log('==========================================');
 
   const mappingFunctions = [
-    // mapParentClasses(parentClasses, allProperties),
-    // mapChildClasses(childClasses, allProperties),
+    mapParentClasses(parentClasses, allProperties),
+    mapChildClasses(childClasses, allProperties),
     mapObjectProperties(objectProperties),
     mapUnionProperties(unionProperties),
     // mapConceptSchemes(conceptSchemes),
@@ -47,14 +47,13 @@ const mapSchemaToGraphql = async ctx => {
   ];
 
   const results = await Promise.all(mappingFunctions);
+
   const flattenedResults = results.flat().filter(Boolean);
 
   // Append individual type definitions
 
   for (const typeObject of flattenedResults) {
-    console.log(typeObject);
     const typeString = printType(typeObject) + '\n\n';
-
     await files.appendToFile(outputPath, typeString);
   }
 

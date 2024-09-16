@@ -1,6 +1,7 @@
 import { GraphQLUnionType } from 'graphql';
 
 const mapUnionProperties = unionProperties => {
+  console.log('Mapping union properties');
   const mappedUnions = unionProperties.map(unionProperty => {
     const newUnionPropertyType = {
       name: unionProperty.name ?? 'Undefined Prompts',

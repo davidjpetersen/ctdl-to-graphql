@@ -28,6 +28,7 @@ const createFieldType = (acceptedTypes, fieldName) => {
 };
 
 const mapParentClasses = async (parentClasses, allProperties) => {
+  console.log('Mapping parent classes');
   return parentClasses.map(
     ({
       name: className,
