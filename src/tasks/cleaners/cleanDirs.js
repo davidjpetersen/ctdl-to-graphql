@@ -1,4 +1,6 @@
-const cleanDirs = async (config, files) => {
+import { config, files } from '../../utils/index.js';
+
+const cleanDirs = async () => {
   const { freshStart, getInputFilePath, getOutputFilePath } = config;
   const { cleanDir } = files;
 

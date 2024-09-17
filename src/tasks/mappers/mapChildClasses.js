@@ -8,87 +8,79 @@ import {
 import { config } from '../../utils/index.js';
 
 const { mappings } = config;
-const unionTypes = [];
-const mapChildClasses = async (childClasses, allProperties) => {
-  console.log('Mapping child classes');
-  const graphqlTypeDefinitions = childClasses.map(childClass => {
-    const {
-      name: className,
-      // annotation: classDescription,
-      fields: classFields,
-      extends: classParents,
-    } = childClass;
+const unionTypes = new Set();
 
-    const graphqlFields = {};
+const createFieldType = (acceptedTypes, fieldName) => {
+  // If there is only one accepted type, return that type.
+  // Map the type to the GraphQL type if it exists in the mappings object, otherwise use GraphQLString.
+  if (acceptedTypes.length === 1) {
+    return { type: mappings[acceptedTypes[0]] || GraphQLString };
+  }
 
-    for (const fieldId of classFields) {
-      const matchingProperty = allProperties
-        ? allProperties.find(property => property['id'] === fieldId)
-        : null;
+  // If there are multiple accepted types, create a union type.
+  const fieldUnionTypes = acceptedTypes.map(
+    type =>
+      new GraphQLObjectType({
+        name: type.split(':')[1],
+        fields: { value: { type: mappings[type] || GraphQLString } },
+      })
+  );
 
-      if (matchingProperty) {
-        const acceptedTypes = matchingProperty.options;
-        const fieldName = matchingProperty.name;
-
-        // If there is only one accepted type, use that as the field type. This will be a relation field.
-        if (acceptedTypes.length === 1) {
-          graphqlFields[fieldName] = {
-            type: mappings[acceptedTypes[0]] || 'String',
-          };
-        } else {
-          // If there are multiple accepted types, create a union type. This will be a union field.
-          const fieldUnionTypes = acceptedTypes.map(
-            type =>
-              new GraphQLObjectType({
-                name: `${type.split(':')[1]}`,
-                fields: {
-                  value: { type: mappings[type] || GraphQLString },
-                },
-              })
-          );
-
-          const UnionType = new GraphQLUnionType({
-            name: `${fieldName}Union`,
-            types: fieldUnionTypes,
-            resolveType(value) {
-              return fieldUnionTypes.find(type =>
-                type.name.endsWith(value.__typename)
-              );
-            },
-          });
-
-          graphqlFields[fieldName] = {
-            type: UnionType,
-          };
-
-          if (!unionTypes.some(ut => ut.name === UnionType.name)) {
-            unionTypes.push(UnionType);
-          }
-        }
-      }
-    }
-
-    const interfaces = classParents.map(className => {
-      return new GraphQLInterfaceType({
-        name: className.split(':')[1],
-      });
-    });
-
-    if (!className) {
-      throw new Error('Class name is missing', classDescription);
-    }
-
-    const graphqlType = new GraphQLObjectType({
-      name: className,
-      // description: classDescription,
-      fields: graphqlFields,
-      interfaces,
-    });
-
-    return graphqlType;
+  // Create a union type for the field.
+  const unionType = new GraphQLUnionType({
+    name: `${fieldName}Union`,
+    types: fieldUnionTypes,
+    resolveType: value =>
+      fieldUnionTypes.find(type => type.name.endsWith(value.__typename)),
   });
 
-  return graphqlTypeDefinitions;
+  // Add the union type to the set of union types.
+  unionTypes.add(unionType);
+  return { type: unionType };
+};
+
+const mapChildClasses = async (childClasses, allProperties) => {
+  console.log('Mapping child classes');
+
+  // Map the child classes to GraphQL object types.
+  return childClasses.map(
+    ({ name: className, fields: classFields, extends: classParents }) => {
+      // If the class name is missing, throw an error.
+      if (!className) {
+        throw new Error('Class name is missing');
+      }
+
+      // Create a GraphQL field for each property in the class.
+      const graphqlFields = classFields.reduce((acc, fieldId) => {
+        const matchingProperty = allProperties?.find(
+          property => property.id === fieldId
+        );
+        if (matchingProperty) {
+          const { options: acceptedTypes, name: fieldName } = matchingProperty;
+          acc[fieldName] = createFieldType(acceptedTypes, fieldName);
+        }
+        return acc;
+      }, {});
+
+      // Create a GraphQL interface for each parent class.
+      const interfaces = Array.from(
+        new Set(classParents.map(className => className.split(':')[1]))
+      ).map(
+        interfaceName =>
+          new GraphQLInterfaceType({
+            name: interfaceName,
+          })
+      );
+
+      console.log(interfaces);
+      // Create a GraphQL union type for each field that has multiple accepted types.
+      return new GraphQLObjectType({
+        name: className,
+        fields: graphqlFields,
+        interfaces,
+      });
+    }
+  );
 };
 
 export default mapChildClasses;

@@ -4,7 +4,7 @@ const mapUnionProperties = unionProperties => {
   console.log('Mapping union properties');
   const mappedUnions = unionProperties.map(unionProperty => {
     const newUnionPropertyType = {
-      name: unionProperty.name ?? 'Undefined Prompts',
+      name: `${unionProperty.name}Union`,
       // description: unionProperty.annotation ?? '',
       types: unionProperty.options.map(option => option.split(':')[1]),
     };

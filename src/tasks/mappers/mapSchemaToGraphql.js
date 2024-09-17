@@ -42,12 +42,9 @@ const mapSchemaToGraphql = async ctx => {
 
   const flattenedResults = results.flat().filter(Boolean);
 
-  // Append individual type definitions
-  for (const typeObject of flattenedResults) {
-    const typeString = printType(typeObject) + '\n\n';
-    await files.appendToFile(outputPath, typeString);
-  }
-
-  console.log('Mapping complete');
+  ctx.mappedSchema = flattenedResults
+    .map(typeObject => printType(typeObject))
+    .join('\n\n');
 };
+
 export default mapSchemaToGraphql;
