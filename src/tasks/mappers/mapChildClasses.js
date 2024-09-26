@@ -72,7 +72,7 @@ const mapChildClasses = async (childClasses, allProperties) => {
           })
       );
 
-      console.log(interfaces);
+      // console.log(interfaces);
       // Create a GraphQL union type for each field that has multiple accepted types.
       return new GraphQLObjectType({
         name: className,

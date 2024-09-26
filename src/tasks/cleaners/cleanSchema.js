@@ -21,8 +21,12 @@ const cleanSchema = async ctx => {
 
   // Print the cleaned schema
   let cleanedSchema = print(schemaWithoutDuplicates);
-  cleanedSchema = cleanedSchema.replace(/ &/g, ',');
   ctx.cleanedSchema = cleanedSchema;
+
+  console.log('cleanedSchema', cleanedSchema);
+  // Construct a query type based on the cleaned schema
+  // const queryType = constructQueryType(cleanedSchema);
+  // ctx.queryType = queryType;
 
   return cleanedSchema;
 };
@@ -41,7 +45,8 @@ const removeDuplicateTypes = ast => {
     if (
       def.kind === 'ObjectTypeDefinition' ||
       def.kind === 'InterfaceTypeDefinition' ||
-      def.kind === 'InputObjectTypeDefinition'
+      def.kind === 'InputObjectTypeDefinition' ||
+      def.kind === 'UnionTypeDefinition'
     ) {
       const typeName = def.name.value;
       if (!typeMap.has(typeName)) {
@@ -73,6 +78,40 @@ const removeEmptyObjectTypes = {
     }
     return node;
   },
+};
+
+/**
+ * Constructs a query type based on the cleaned schema.
+ *
+ * @param {string} cleanedSchema - The cleaned GraphQL schema.
+ * @returns {string} - The constructed query type.
+ */
+const constructQueryType = cleanedSchema => {
+  try {
+    const ast = parse(cleanedSchema);
+    const queryFields = [];
+
+    ast.definitions.forEach(node => {
+      console.log(node);
+      if (node.name && node.name.value) {
+        queryFields.push(
+          `  ${node.name.value.toLowerCase()}: ${node.name.value}`
+        );
+      }
+    });
+
+    if (queryFields.length === 0) {
+      throw new Error('No valid definitions found in the schema');
+    }
+
+    const queryString = queryFields.join('\n');
+    const queryType = `type Query { ${queryString} }`;
+
+    return queryType;
+  } catch (error) {
+    console.error('Error constructing query type:', error.message);
+    throw new Error('Failed to construct query type: ' + error.message);
+  }
 };
 
 export default cleanSchema;
